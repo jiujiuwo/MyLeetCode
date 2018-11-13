@@ -16,34 +16,39 @@ import java.io.InputStreamReader;
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
+ * int val;
+ * ListNode next;
+ * ListNode(int x) { val = x; }
  * }
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode head = new ListNode(l1.val+l2.val);
+        ListNode head = new ListNode(l1.val + l2.val);
         ListNode ptr = head;
 
-        if(l1.next==null){
-            return head;
-        }else {
-            while(l1.next!=null){
+        while (l1.next != null || l2.next != null) {
+            if (l1.next != null) {
                 l1 = l1.next;
-                l2 = l2.next;
-                ptr.next = new ListNode(l1.val+l2.val);
-                ptr = ptr.next;
+            } else {
+                l1.val = 0;
             }
+
+            if (l2.next != null) {
+                l2 = l2.next;
+            } else {
+                l2.val = 0;
+            }
+            ptr.next = new ListNode(l1.val + l2.val);
+            ptr = ptr.next;
         }
 
         ptr = head;
-        while(ptr.next!=null){
-            if(ptr.val>=10){
-                ptr.val -=10;
-                if(ptr.next!=null){
-                    ptr.next.val +=1;
-                }else {
+        while (ptr != null) {
+            if (ptr.val >= 10) {
+                ptr.val -= 10;
+                if (ptr.next != null) {
+                    ptr.next.val += 1;
+                } else {
                     ptr.next = new ListNode(1);
                 }
             }
@@ -64,7 +69,7 @@ public class MainClass {
 
         String[] parts = input.split(",");
         int[] output = new int[parts.length];
-        for(int index = 0; index < parts.length; index++) {
+        for (int index = 0; index < parts.length; index++) {
             String part = parts[index].trim();
             output[index] = Integer.parseInt(part);
         }
@@ -78,7 +83,7 @@ public class MainClass {
         // Now convert that list into linked list
         ListNode dummyRoot = new ListNode(0);
         ListNode ptr = dummyRoot;
-        for(int item : nodeValues) {
+        for (int item : nodeValues) {
             ptr.next = new ListNode(item);
             ptr = ptr.next;
         }
