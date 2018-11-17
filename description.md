@@ -1,7 +1,7 @@
 ## LeetCode刷题记录
 
 #### 2018 11 13, add two numbers
-```
+```java
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode head = new ListNode(l1.val + l2.val);
@@ -40,7 +40,8 @@ class Solution {
 ```
 
 #### 2018 11 17 3,Longest Substring Without Repeating Characters
-```
++ java 超时解
+```java
 class Solution {
       public int lengthOfLongestSubstring(String s) {
 
@@ -75,4 +76,27 @@ class Solution {
 
 
 //time limit exceeded
+```
++ Go语言正解
+```go
+func lengthOfLongestSubstring(s string) int {
+    //记录每个字符最后出现的位置
+	start := 0
+	maxLength := 0
+	lastOccured :=make(map[byte]int)
+	for i,ch := range []byte(s){
+
+		lastIndex,ok := lastOccured[ch]
+
+		if ok && lastIndex >= start{
+			start = lastIndex + 1
+		}
+		if i - start + 1 > maxLength{
+			maxLength = i - start + 1
+		}
+		lastOccured[ch] = i
+	}
+
+	return maxLength
+}
 ```
