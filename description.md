@@ -40,7 +40,7 @@ class Solution {
 ```
 
 #### 2018 11 17 3,Longest Substring Without Repeating Characters
-+ java 超时解
++ java 超时解,时间复杂度太大，O(N<sup>3</sup>)
 ```java
 class Solution {
       public int lengthOfLongestSubstring(String s) {
@@ -77,7 +77,7 @@ class Solution {
 
 //time limit exceeded
 ```
-+ Go语言正解
++ Go语言正解,时间复杂度 O(N),12ms
 ```go
 func lengthOfLongestSubstring(s string) int {
     //记录每个字符最后出现的位置
@@ -98,5 +98,41 @@ func lengthOfLongestSubstring(s string) int {
 	}
 
 	return maxLength
+}
+```
++ java O(N)写法,35ms
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+
+    public int lengthOfLongestSubstring(String s) {
+
+        int maxLen = 0;
+        int startIndex =0;
+
+        Map<Character,Integer> lastOccuredMap = new HashMap<>();
+
+        for(int i =0;i < s.length();i++){
+            char tmp = s.charAt(i);
+          //  System.out.println(tmp);
+
+            //一开始忘记 添加 lastOccuredMap.get(tmp)>=startIndex 这个条件，导致回退过多。
+            // 还是对算法的过程不熟悉，不是自己想的
+            if(lastOccuredMap.containsKey(tmp)&&lastOccuredMap.get(tmp)>=startIndex){
+                startIndex = lastOccuredMap.get(tmp) + 1;
+            }
+
+            if((i - startIndex + 1) > maxLen){
+                maxLen = i - startIndex + 1;
+            }
+         //   System.out.println(i);
+
+            lastOccuredMap.put(tmp,i);
+        }
+
+        return maxLen;
+    }
 }
 ```
