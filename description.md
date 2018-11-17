@@ -1,6 +1,6 @@
 ## LeetCode刷题记录
 
-+ 2018 11 13, add two numbers
+#### 2018 11 13, add two numbers
 ```
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -37,4 +37,42 @@ class Solution {
         return head;
     }
 }
+```
+
+#### 2018 11 17 3,Longest Substring Without Repeating Characters
+```
+class Solution {
+      public int lengthOfLongestSubstring(String s) {
+
+        int maxLen = 0;
+        char[] chars = s.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            for (int j = i+1; j<= chars.length; j++) {
+                //System.out.println(s.substring(i,j));
+                int tmp = checkDulplicateAndLen(s.substring(i,j));
+                if(tmp > maxLen){
+                    maxLen = tmp;
+                }
+            }
+        }
+        return maxLen;
+    }
+    private int checkDulplicateAndLen(String substring) {
+        int numChars = 0;
+        Map<Character,Integer> charMap = new HashMap<>();
+        for(int i =0;i < substring.length();i++){
+            if(charMap.containsKey(substring.charAt(i))){
+                return 0;
+            }else {
+                charMap.put(substring.charAt(i),0);
+                numChars++;
+            }
+        }
+        return numChars;
+    }
+}
+
+
+//time limit exceeded
 ```
