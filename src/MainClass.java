@@ -1,41 +1,48 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 
-    public int lengthOfLongestSubstring(String s) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        double median = 0;
+        int index = (len1+len2)/2;
 
-        int maxLen = 0;
-        int startIndex =0;
+        int newNums[] = new int[index+1];
 
-        Map<Character,Integer> lastOccuredMap = new HashMap<>();
-
-        for(int i =0;i < s.length();i++){
-            char tmp = s.charAt(i);
-          //  System.out.println(tmp);
-
-            //一开始忘记 添加 lastOccuredMap.get(tmp)>=startIndex 这个条件，导致回退过多。
-            // 还是对算法的过程不熟悉，不是自己想的
-            if(lastOccuredMap.containsKey(tmp)&&lastOccuredMap.get(tmp)>=startIndex){
-                startIndex = lastOccuredMap.get(tmp) + 1;
+        int m = 0,n = 0;
+        for(int i =0;i <= index;i++){
+            if(m  <nums1.length && n < nums2.length){
+                if(nums1[m] > nums2[n]){
+                    newNums[i] = nums2[n];
+                    n++;
+                }else{
+                    newNums[i] = nums1[m];
+                    m++;
+                }
+                continue;
             }
-
-            if((i - startIndex + 1) > maxLen){
-                maxLen = i - startIndex + 1;
+            if(m < nums1.length){
+                newNums[i] = nums1[m];
+                m++;
             }
-         //   System.out.println(i);
-
-            lastOccuredMap.put(tmp,i);
+            if(n < nums2.length){
+                newNums[i] = nums2[n];
+                n++;
+            }
         }
 
-        return maxLen;
+        if((nums1.length + nums2.length) % 2 == 0){
+            return (newNums[newNums.length-1] + newNums[newNums.length-2]) * 1.0 / 2;
+        }else {
+            return newNums[newNums.length-1];
+        }
+
     }
 }
-
 public class MainClass {
     public static void main(String[] args){
-        String s = "abba";
-        int x = new Solution().lengthOfLongestSubstring(s);
+       int nums1[] ={1,3};
+       int nums2[] = {2,4};
+        double x = new Solution().findMedianSortedArrays(nums1,nums2);
         System.out.println(x);
     }
 }
