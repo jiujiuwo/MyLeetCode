@@ -15,6 +15,7 @@ class Solution {
         for (int j = 0; j < len; j++) {
 
             for (int i = 0; i <= j; i++) {
+                System.out.println(i+" "+j);
 
                 boolean judge = s.charAt(i) == s.charAt(j);
 
@@ -23,6 +24,8 @@ class Solution {
                 if (dp[i][j] && j - i + 1 > max) {
                     max = j - i + 1;
                     ans = s.substring(i, j + 1);
+                    System.out.println(max);
+
                 }
             }
         }
@@ -32,7 +35,7 @@ class Solution {
 public class MainClass {
     public static void main(String[] args){
         System.out.println(System.currentTimeMillis());
-        String x = new Solution().longestPalindrome("\"vmqjjfnxtyciixhceqyvibhdmivndvxyzzamcrtpywczjmvlodtqbpjayfchpisbiycczpgjdzezzprfyfwiujqbcubohvvyakxfmsyqkysbigwcslofikvurcbjxrccasvyflhwkzlrqowyijfxacvirmyuhtobbpadxvngydlyzudvnyrgnipnpztdyqledweguchivlwfctafeavejkqyxvfqsigjwodxoqeabnhfhuwzgqarehgmhgisqetrhuszoklbywqrtauvsinumhnrmfkbxffkijrbeefjmipocoeddjuemvqqjpzktxecolwzgpdseshzztnvljbntrbkealeemgkapikyleontpwmoltfwfnrtnxcwmvshepsahffekaemmeklzrpmjxjpwqhihkgvnqhysptomfeqsikvnyhnujcgokfddwsqjmqgsqwsggwhxyinfspgukkfowoxaxosmmogxephzhhy\"");
+        String x = new Solution().longestPalindrome("abba");
         System.out.println(System.currentTimeMillis());
         System.out.println(x);
     }

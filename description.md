@@ -228,8 +228,8 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 }
 ```
 
-#### 2018/11/19 5. Longest Palindromic Substring
-+ java 超时解，
+#### 2018/11/19 5. Longest Palindromic Substring（最长回文子串）
++ java 超时解，暴力解法
 ```java
 class Solution {
     public String longestPalindrome(String s) {
@@ -268,7 +268,7 @@ class Solution {
     }
 }
 ```
-+ Go语言，ac,3856ms,beat1.63%
++ Go语言，暴力解法，ac,3856ms,beat1.63%
 <br>思路和java超时的一样
 ```go
 
@@ -301,5 +301,83 @@ func isPalindrome(s string) bool{
 		}
 	}
 	return isPalindrome
+}
+```
+
++ java语言，动态规划解法，148 ms,beat 16% 
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+
+        if (s == null || "".equals(s)) {
+            return s;
+        }
+
+        int len = s.length();
+
+        String ans = "";
+        int max = 0;
+
+        boolean[][] dp = new boolean[len][len];
+
+        for (int j = 0; j < len; j++) {
+
+            for (int i = 0; i <= j; i++) {
+                
+                boolean judge = s.charAt(i) == s.charAt(j);
+
+                dp[i][j] = j - i > 2 ? dp[i + 1][j - 1] && judge : judge;
+
+                if (dp[i][j] && j - i + 1 > max) {
+                    max = j - i + 1;
+                    ans = s.substring(i, j + 1);
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
++ Go 语言，dp,94ms,beat 38%
+```go
+func longestPalindromeDp(s string) string {
+
+	if len(s) == 0{
+		return s
+	}
+
+	sLen := len(s)
+	result := ""
+	max := 0
+
+	dp := make([][]bool,sLen)
+	for i:=0; i< sLen;i++{
+		dp[i] = make([]bool,sLen)
+	}
+
+	//动态规划，i,j分别代表什么？？？
+	for i :=0 ;i < sLen; i++{
+		for j := 0; j <= i; j++{	//遍历所有子串
+			//fmt.Println(result,dp,max,i,j)
+			//判断首尾两个字符是否相等
+			judge := s[i] == s[j]
+			fmt.Println(j,i)
+			//动态规划递推式
+			//dp[i][j] = (j - i > 2) ? (dp[i+1][j-1] && judge) :judge
+			if i - j > 2{
+				dp[j][i] = dp[j+1][i-1] && judge
+			}else{
+				dp[j][i] = judge
+			}
+
+			if dp[j][i] && ((i - j + 1) > max){
+			//	fmt.Println(j,i,max)
+				max = i - j + 1
+				result = s[j:i+1]
+			}
+		}
+	}
+	fmt.Println(dp)
+	return result
 }
 ```
