@@ -1,37 +1,32 @@
 class Solution {
     public String longestPalindrome(String s) {
 
-        String result = "";
-        String tmp ="";
+        if (s == null || "".equals(s)) {
+            return s;
+        }
 
-        for(int i=0;i< s.length();i++){
-            for (int j = s.length();j >=i;j--){
-                if(checkPalindrome(s.substring(i,j))){
-                    tmp = s.substring(i,j);
-                    if(tmp.length()>result.length()){
-                        result = tmp;
-                    }
+        int len = s.length();
+
+        String ans = "";
+        int max = 0;
+
+        boolean[][] dp = new boolean[len][len];
+
+        for (int j = 0; j < len; j++) {
+
+            for (int i = 0; i <= j; i++) {
+
+                boolean judge = s.charAt(i) == s.charAt(j);
+
+                dp[i][j] = j - i > 2 ? dp[i + 1][j - 1] && judge : judge;
+
+                if (dp[i][j] && j - i + 1 > max) {
+                    max = j - i + 1;
+                    ans = s.substring(i, j + 1);
                 }
             }
         }
-
-        return result;
-    }
-
-    private boolean checkPalindrome(String substring) {
-      //  System.out.println(substring);
-
-        boolean isPalindrome = true;
-
-        for(int i= 0; i < substring.length()/2;i++){
-            if(substring.charAt(i)==substring.charAt(substring.length()-1-i)){
-                continue;
-            }else{
-                isPalindrome = false;
-            }
-        }
-
-        return isPalindrome;
+        return ans;
     }
 }
 public class MainClass {
