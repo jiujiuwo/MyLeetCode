@@ -13,6 +13,11 @@ class Solution {
         //简单的题目做了一个多小时。。。惨
         for(int i=0,j =0,index =0;index < s.length();index++){
             chars[i][j] = s.charAt(index);
+            System.out.println(i+" "+j);
+
+            if(i == numRows-1){
+                down = false;
+            }
            // System.out.println(i+" "+j);
             if(down){
                 i++;
@@ -20,11 +25,11 @@ class Solution {
                 i--;
                 j++;
             }
-           if(i==numRows){
-                i -= 2;     //边界条件搞不清楚，这里，一开始写的 i--,结果发现不对
+/*           if(i==numRows){
+                i -= 2;     //边界条件搞不清楚，这里，一开始写的 i--,结果发现不对,写在这里不简便，放到上面去
                 j++;
                 down = false;
-           }
+           }*/
            if(i==0){
               // i++;           在向上走的时候，一直是i--,当i减到0时，
                down = true;
