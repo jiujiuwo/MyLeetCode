@@ -12,7 +12,7 @@ class Solution {
 
         boolean[][] dp = new boolean[len][len];
 
-        for (int j = 0; j < len; j++) {
+        for (int j = 0; j < len; j++) {//为何先改变 j?
 
             for (int i = 0; i <= j; i++) {
                 System.out.println(i+" "+j);
