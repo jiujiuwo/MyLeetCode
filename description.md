@@ -430,7 +430,7 @@ class Solution {
     }
 }
 ```
-#### 7.7. Reverse Integer 2018/11/22
+#### 7. Reverse Integer 2018/11/22
 + java解法，24ms, beat 58%,难点在int最大值越界，溢出判断
 ```java
 class Solution {
