@@ -1,6 +1,7 @@
 ## LeetCode刷题记录
 
-#### 2018 11 13, add two numbers
+#### 2.add two numbers  2018/11/13  
++ java解法，难点在 l1,l2 有没有下一个值的判断
 ```java
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
@@ -39,7 +40,7 @@ class Solution {
 }
 ```
 
-#### 2018 11 17 3,Longest Substring Without Repeating Characters
+#### 3.Longest Substring Without Repeating Characters 2018/11/17  
 + java 超时解,时间复杂度太大，O(N<sup>3</sup>)
 ```java
 class Solution {
@@ -137,7 +138,7 @@ class Solution {
 }
 ```
 
-#### 2018/11/18 &ensp; &ensp; &ensp;4. Median of Two Sorted Arrays
+#### 4. Median of Two Sorted Arrays  2018/11/18 &ensp; &ensp; &ensp;
 + java 25 ms,感觉题目不难，但是用时较长，之后要多练
 ```java
 class Solution {
@@ -228,8 +229,8 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 }
 ```
 
-#### 2018/11/19 5. Longest Palindromic Substring（最长回文子串）
-+ java 超时解，暴力解法
+#### 5.Longest Palindromic Substring（最长回文子串） 2018/11/19 
++ java 超时解，暴力解法，难点在回文串的判断
 ```java
 class Solution {
     public String longestPalindrome(String s) {
@@ -304,7 +305,8 @@ func isPalindrome(s string) bool{
 }
 ```
 
-+ java语言，动态规划解法，148 ms,beat 16% 
++ java语言，动态规划解法，148 ms,beat 16% ，
+难点在dp[i][j]的理解和推导
 ```java
 class Solution {
     public String longestPalindrome(String s) {
@@ -381,8 +383,8 @@ func longestPalindromeDp(s string) string {
 	return result
 }
 ```
-#### 2018/11/21 6. ZigZag Conversion（Z型字母排列转换）
-+ java语言，72ms,O(N<sup>2</sup>)
+#### 6.ZigZag Conversion（Z型字母排列转换）  2018/11/21 
++ java语言，72ms,O(N<sup>2</sup>)，难点在精确的下标控制
 ```java
 class Solution {
     public String convert(String s, int numRows) {
@@ -425,6 +427,55 @@ class Solution {
         }
 
         return result;
+    }
+}
+```
+#### 7.7. Reverse Integer 2018/11/22
++ java解法，24ms, beat 58%,难点在int最大值越界，溢出判断
+```java
+class Solution {
+    public int reverse(int x) {
+
+        long result = 0;
+
+        //一开始没有看清题目的范围
+        if(x >= Math.pow(2,31)-1 || x <= Math.pow(-2,31)){
+            return 0;
+        }
+
+        //计算过程中可能溢出，溢出返回0
+        if(x > 0){
+            int len = (x+"").length();
+            for(int i = 0;i < len;i++){
+                //中间过程，一开始   x % (int)Math.pow(10,i+1) ,已经造成了整数溢出
+                long tmp = x % (long)Math.pow(10,i+1) ;
+               // System.out.println(tmp);
+                tmp = tmp / (long)Math.pow(10,i);
+                //System.out.println(tmp);
+               // System.out.println(result);
+                result += tmp * (long)Math.pow(10,len-i-1);
+            }
+        }else if(x < 0){
+            x = -x;
+            int len = (x+"").length();
+            for(int i = 0;i < len;i++){
+                long tmp = x % (long)Math.pow(10,i+1) ;
+                // System.out.println(tmp);
+                tmp = tmp / (long)Math.pow(10,i);
+                // System.out.println(tmp);
+                // System.out.println(result);
+                result += tmp * (long)Math.pow(10,len-i-1);
+            }
+            result = -result;
+        }else{
+            result = x;
+        }
+        //利用long来存储中间过程
+        if(result >= Integer.MAX_VALUE ||result <= Integer.MIN_VALUE ){
+            return 0;
+        }
+
+        return (int)result;
     }
 }
 ```
