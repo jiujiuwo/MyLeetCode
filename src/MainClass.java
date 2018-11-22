@@ -1,56 +1,57 @@
 class Solution {
-    public String convert(String s, int numRows) {
+    public int reverse(int x) {
 
-        String result = "";
-        char[][] chars = new char[numRows][s.length()];
-        boolean down = true;
+        long result = 0;
 
-        //一开始没有想到，行数为1的情况，导致编译错误。
-        if(numRows <=1){
-            return s;
+        //一开始没有看清题目的范围
+        if(x >= Math.pow(2,31)-1 || x <= Math.pow(-2,31)){
+            return 0;
         }
 
-        //简单的题目做了一个多小时。。。惨
-        for(int i=0,j =0,index =0;index < s.length();index++){
-            chars[i][j] = s.charAt(index);
-            System.out.println(i+" "+j);
-
-            if(i == numRows-1){
-                down = false;
+        //计算过程中可能溢出，溢出返回0
+        if(x > 0){
+            int len = (x+"").length();
+            for(int i = 0;i < len;i++){
+                //中间过程，一开始   x % (int)Math.pow(10,i+1) ,已经造成了整数溢出
+                long tmp = x % (long)Math.pow(10,i+1) ;
+               // System.out.println(tmp);
+                tmp = tmp / (long)Math.pow(10,i);
+                //System.out.println(tmp);
+               // System.out.println(result);
+                result += tmp * (long)Math.pow(10,len-i-1);
             }
-           // System.out.println(i+" "+j);
-            if(down){
-                i++;
-            }else{
-                i--;
-                j++;
+        }else if(x < 0){
+            x = -x;
+            int len = (x+"").length();
+            for(int i = 0;i < len;i++){
+                long tmp = x % (long)Math.pow(10,i+1) ;
+                // System.out.println(tmp);
+                tmp = tmp / (long)Math.pow(10,i);
+                // System.out.println(tmp);
+                // System.out.println(result);
+                result += tmp * (long)Math.pow(10,len-i-1);
             }
-/*           if(i==numRows){
-                i -= 2;     //边界条件搞不清楚，这里，一开始写的 i--,结果发现不对,写在这里不简便，放到上面去
-                j++;
-                down = false;
-           }*/
-           if(i==0){
-              // i++;           在向上走的时候，一直是i--,当i减到0时，
-               down = true;
-           }
+            result = -result;
+        }else{
+            result = x;
+        }
+        //利用long来存储中间过程
+        if(result >= Integer.MAX_VALUE ||result <= Integer.MIN_VALUE ){
+            return 0;
         }
 
-        for(int i = 0;i < numRows;i++){
-            for(int j = 0; j < s.length();j++){
-                if(chars[i][j]!='\0')
-                result += chars[i][j];
-            }
-        }
-
-        return result;
+        return (int)result;
     }
 }
 public class MainClass {
     public static void main(String[] args){
-        System.out.println(System.currentTimeMillis());
-        String x = new Solution().convert("PAYPALISHIRING",3);
-        System.out.println(System.currentTimeMillis());
+      //  System.out.println(System.currentTimeMillis());
+        int x = new Solution().reverse(1534236469);
+     //   System.out.println(System.currentTimeMillis());
         System.out.println(x);
+        //java 中 int 的最大值
+        System.out.println(Integer.MAX_VALUE);
+        System.out.println(Long.MAX_VALUE);
+        //System.out.println(Math.pow(2,31)-1);
     }
 }
