@@ -479,3 +479,73 @@ class Solution {
     }
 }
 ```
++ Go语言解法
+
+#### 8. String to Integer (atoi) 2018/11/23，
++ 一道简单的题目，结果acc只有14.2%，远低于其他题目，原因就是，要考虑的情况太多了。
+我足足提交了10次才ac
+<br> beat 97.57%,17ms
+
+```java
+class Solution {
+    public int myAtoi(String str) {
+
+        double result = 0;
+        int figureCount = 0;    //处理 +0 123 这样的输入情况
+
+        //一开始没有判空
+        if(str.length()<=0){
+            return 0;
+        }
+
+        boolean isNegative = false;
+
+        for(int i= 0;i < str.length();i++){
+            //这里也要判断  figureCount==0  防止出现  0-1的情况
+            if(str.charAt(i)=='-' && result==0&&figureCount==0){
+                isNegative = true;
+                //防止出现正负号同时有的情况
+                if(i < str.length()-1 && str.charAt(i+1)>='0' && str.charAt(i+1)<='9'){
+                    continue;               //这里要加continue,否则，如果只有一个"-"号，会越界
+                }else {
+                    break;
+                }
+            }
+            if(str.charAt(i)=='+'&&result==0&&figureCount==0){
+                if(i < str.length()-1 && str.charAt(i+1)>='0' && str.charAt(i+1)<='9'){
+                    continue;               //这里要加continue,否则，如果只有一个"-"号，会越界
+                }else {
+                    break;
+                }
+            }
+            //System.out.println(i);
+            if(str.charAt(i)>='0' && str.charAt(i)<='9'){
+                result = result * 10 + str.charAt(i) - '0';
+                figureCount++;
+            }else if(str.charAt(i)==' '&&result==0&&figureCount==0){
+                continue;
+            }else{
+                break;
+            }
+        }
+
+        //判断正负要在下面的代码之前
+       // System.out.println(result);
+
+        if(isNegative){
+            result = -result;
+        }
+        //添加了两条语句，运行时间增加30ms
+       // System.out.println(result);
+        //System.out.println(Long.MAX_VALUE);
+
+        if(result >= Integer.MAX_VALUE||result>=Long.MAX_VALUE){
+            return Integer.MAX_VALUE;
+        }else if(result <= Integer.MIN_VALUE||result<=Long.MIN_VALUE){
+            return Integer.MIN_VALUE;
+        }
+
+        return (int)result;
+    }
+}
+```
