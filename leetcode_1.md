@@ -550,6 +550,7 @@ class Solution {
 }
 ```
 #### 9. Palindrome Number,回文数字的判断
++ Java 解法
 + 154ms,faster than 24.48% java
 ```java
 class Solution {
@@ -569,6 +570,27 @@ class Solution {
 
     return true;
     }
+}
+```
+
++ Go语言解法
++ Runtime: 56 ms, faster than 100.00% of Go online submissions for Palindrome Number.
+```go
+import (
+	"strconv"
+)
+//哇，go语言同样的解法，beat 100%
+func isPalindrome(x int) bool {
+	tmpX := strconv.Itoa(x)
+	len := len(tmpX)
+	for index,_ := range []byte(tmpX){
+		if(tmpX[index]==tmpX[len - index -1]){
+			continue
+		}else{
+			return false
+		}
+	}
+	return true
 }
 
 ```
