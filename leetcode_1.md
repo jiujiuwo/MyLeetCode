@@ -594,3 +594,36 @@ func isPalindrome(x int) bool {
 }
 
 ```
+
+#### 10. Regular Expression Matching (正则表达式匹配)
++ hard类型的一道题目，但是可以直接使用java的正则表达式匹配求解
+
++ java,使用String类的match函数
++ 138 ms, faster than 7.84% of Java online submissions for Regular Expression Matching.
+```java
+class Solution {
+    public boolean isMatch(String s, String p) {
+
+        boolean isMatch = s.matches(p);
+
+        return isMatch;
+    }
+}
+```
+
++ Go语言，使用正则库，结果错误,下一步查找原因
+```go
+import (
+	"regexp"
+)
+
+/*
+	同样是内建的正则库，go语言的结果与java不同，不知道为什么。
+	目前该方法是错误的，下一步寻找问题
+ */
+func isMatch(s string, p string) bool {
+	isMatch,_ := regexp.MatchString(p,s)
+	//isMatch,_ := regexp.Match(p,[]byte(s))	两个方法都是错的
+	return isMatch
+}
+```
