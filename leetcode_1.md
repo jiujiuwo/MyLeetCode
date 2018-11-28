@@ -611,6 +611,96 @@ class Solution {
 }
 ```
 
++ Java,使用递归方式求解
+    + 134ms,beat 8.46%
+```java
+class Solution {
+    //递归解决模式串匹配问题
+
+    public boolean isMatch(String s, String p) {
+        if(p.isEmpty()){
+            return s.isEmpty();
+        }
+        System.out.println(s+","+p);
+
+        //判断首字母是否匹配
+        boolean firstMatch = (!s.isEmpty()&&(p.charAt(0) == s.charAt(0)||p.charAt(0) == '.'));
+
+        //如果 p 的长度大于2，且 p[1] == '*' ，
+        if(p.length() >= 2 && p.charAt(1) =='*'){
+            //如果出现了 *,那么*之前的字符是可以不出现的，因此可以考虑，匹配s和剩下的p[2:]
+            return(isMatch(s,p.substring(2))||(firstMatch && isMatch(s.substring(1),p)));
+        }else{  //p[1]不是
+            return firstMatch && isMatch(s.substring(1),p.substring(1));
+        }
+    }
+}
+
+```
++ java使用动态规划求解，
+    + 22ms,beat 50.7%
+```java
+enum Result {
+    TRUE, FALSE
+}
+
+class Solution {
+    Result[][] memo;
+
+    public boolean isMatch(String text, String pattern) {
+        memo = new Result[text.length() + 1][pattern.length() + 1];
+        return dp(0, 0, text, pattern);
+    }
+
+    public boolean dp(int i, int j, String text, String pattern) {
+        if (memo[i][j] != null) {
+            return memo[i][j] == Result.TRUE;
+        }
+        boolean ans;
+        if (j == pattern.length()){
+            ans = i == text.length();
+        } else{
+            boolean first_match = (i < text.length() &&
+                                   (pattern.charAt(j) == text.charAt(i) ||
+                                    pattern.charAt(j) == '.'));
+
+            if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
+                ans = (dp(i, j+2, text, pattern) ||
+                       first_match && dp(i+1, j, text, pattern));
+            } else {
+                ans = first_match && dp(i+1, j+1, text, pattern);
+            }
+        }
+        memo[i][j] = ans ? Result.TRUE : Result.FALSE;
+        return ans;
+    }
+}
+```
++ 动态规划，自底向上
+    + 19ms,beat 63.4%
+```java
+class Solution {
+    public boolean isMatch(String text, String pattern) {
+        boolean[][] dp = new boolean[text.length() + 1][pattern.length() + 1];
+        dp[text.length()][pattern.length()] = true;
+
+        for (int i = text.length(); i >= 0; i--){
+            for (int j = pattern.length() - 1; j >= 0; j--){
+                boolean first_match = (i < text.length() &&
+                                       (pattern.charAt(j) == text.charAt(i) ||
+                                        pattern.charAt(j) == '.'));
+                if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
+                    dp[i][j] = dp[i][j+2] || first_match && dp[i+1][j];
+                } else {
+                    dp[i][j] = first_match && dp[i+1][j+1];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+```
+
 + Go语言，使用正则库，结果错误,下一步查找原因
 ```go
 import (
