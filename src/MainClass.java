@@ -1,25 +1,36 @@
 class Solution {
     //递归解决模式串匹配问题
+    //自上向下
+    boolean[][] dp;
 
     public boolean isMatch(String s, String p) {
+        dp = new boolean[s.length()+1][p.length()+1];
 
-        System.out.println(s+","+p);
-        if(p.isEmpty()){
-            return s.isEmpty();
+        //dp[i][j]表示s[i:]p[j:]是否匹配，因此如果两个都是空串，则肯定都匹配
+        dp[s.length()][p.length()] = true;
+        for(int i = s.length();i >=0;i--){
+            for(int j = p.length()-1;j >=0;j--){
+                //这里实现的步骤感觉和递归确实差不多
+                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
+                if(j + 1 < p.length() && p.charAt(j+1) == '*'){
+                    //这里的dp和递归中的isMatch方法本质相同，如果p的j+1位置上为*，则查看dp[i][j+2]是否匹配，或首字母和dp[i+1][j]是否匹配
+                    dp[i][j] = dp[i][j+2]||firstMatch && dp[i+1][j];
+                }else {
+                    dp[i][j] = firstMatch &&dp[i+1][j+1];
+                }
+            }
         }
 
-        //判断首字母是否匹配
-        boolean firstMatch = (!s.isEmpty()&&(p.charAt(0) == s.charAt(0)||p.charAt(0) == '.'));
-
-        //如果 p 的长度大于2，且 p[1] == '*' ，
-        if(p.length() >= 2 && p.charAt(1) =='*'){
-            //如果出现了 *,那么*之前的字符是可以不出现的，因此可以考虑，匹配s和剩下的p[2:]
-            //或的第二个条件也是必须的，如果输入是 “aa”,"a*"的话，适用
-            return(isMatch(s,p.substring(2))||(firstMatch && isMatch(s.substring(1),p)));
-        }else{  //p[1]不是
-            return firstMatch && isMatch(s.substring(1),p.substring(1));
+        dp = new boolean[s.length()+1][p.length()+1];
+        dp[0][0] = true;
+        for(int i = 0;i < s.length();i++){
+            for(int j = 0;j < p.length();j++){
+                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
+            }
         }
+        return dp[0][0];
     }
+
 }
 
 public class MainClass {
