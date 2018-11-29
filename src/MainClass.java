@@ -1,42 +1,27 @@
 class Solution {
-    //递归解决模式串匹配问题
-    //自上向下
-    boolean[][] dp;
+    public int maxArea(int[] height) {
 
-    public boolean isMatch(String s, String p) {
-        dp = new boolean[s.length()+1][p.length()+1];
+    //    int dp[][] = new int[height.length][height.length];
+        int tmp = 0,result = 0;
 
-        //dp[i][j]表示s[i:]p[j:]是否匹配，因此如果两个都是空串，则肯定都匹配
-        dp[s.length()][p.length()] = true;
-        for(int i = s.length();i >=0;i--){
-            for(int j = p.length()-1;j >=0;j--){
-                //这里实现的步骤感觉和递归确实差不多
-                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
-                if(j + 1 < p.length() && p.charAt(j+1) == '*'){
-                    //这里的dp和递归中的isMatch方法本质相同，如果p的j+1位置上为*，则查看dp[i][j+2]是否匹配，或首字母和dp[i+1][j]是否匹配
-                    dp[i][j] = dp[i][j+2]||firstMatch && dp[i+1][j];
-                }else {
-                    dp[i][j] = firstMatch &&dp[i+1][j+1];
+        for(int i=0;i<height.length-1;i++){
+            for(int j = 1;j < height.length;j++){
+                tmp = (height[i] > height[j] ? height[j] : height[i]) *(j-i);
+               // System.out.println(i + " "+j+" "+(j-i));
+                if(tmp>result){
+                    result = tmp;
                 }
             }
         }
 
-        dp = new boolean[s.length()+1][p.length()+1];
-        dp[0][0] = true;
-        for(int i = 0;i < s.length();i++){
-            for(int j = 0;j < p.length();j++){
-                boolean firstMatch = (i < s.length() && (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.'));
-            }
-        }
-        return dp[0][0];
+        return result;
     }
-
 }
 
 public class MainClass {
     public static void main(String[] args){
-        boolean x = new Solution().isMatch("aab","c*a*b*");
-
+        int[] tmp = {1,8,6,2,5,4,8,3,7};
+        int x = new Solution().maxArea(tmp);
         System.out.println(x);
 
     }
