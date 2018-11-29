@@ -1,23 +1,23 @@
 class Solution {
+    //O(n)的解法，因为左右取两者小后是对称的，所以，没有必要二重循环，
     public int maxArea(int[] height) {
+        int max = 0,s = 0;
 
-    //    int dp[][] = new int[height.length][height.length];
-        int tmp = 0,result = 0;
-
-        for(int i=0;i<height.length-1;i++){
-            for(int j = 1;j < height.length;j++){
-                tmp = (height[i] > height[j] ? height[j] : height[i]) *(j-i);
-               // System.out.println(i + " "+j+" "+(j-i));
-                if(tmp>result){
-                    result = tmp;
-                }
+        for(int i = 0,j = height.length-1; i < j;){
+            if(height[i] > height[j]) {
+                s = height[j]*(j-i);
+                j--;
             }
+            else {
+                s = height[i]*(j-i);
+                i++;
+            }
+            if(s > max) max = s;
         }
 
-        return result;
+        return max;
     }
 }
-
 public class MainClass {
     public static void main(String[] args){
         int[] tmp = {1,8,6,2,5,4,8,3,7};

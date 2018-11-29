@@ -51,6 +51,50 @@ class Solution {
     }
 }
 ```
++ java O(n)解法
++ beat 3.89%
+```java
+class Solution {
+    //O(n)的解法，因为左右取两者小后是对称的，所以，没有必要二重循环，
+    public int maxArea(int[] height) {
+        int maxarea = 0, l = 0, r = height.length - 1;
+        while (l < r) {
+            maxarea = Math.max(maxarea, Math.min(height[l], height[r]) * (r - l));
+            if (height[l] < height[r])
+                l++;
+            else
+                r--;
+        }
+        return maxarea;
+    }
+}
+
+```
++ 奇怪的5ms解法，不知道和上面差在哪里
++ 可能差在 Math库的调用？？？
+```java
+class Solution {
+    //O(n)的解法，因为左右取两者小后是对称的，所以，没有必要二重循环，
+    public int maxArea(int[] height) {
+        int max = 0,s = 0;
+
+        for(int i = 0,j = height.length-1; i < j;){
+            if(height[i] > height[j]) {
+                s = height[j]*(j-i);
+                j--;
+            }
+            else {
+                s = height[i]*(j-i);
+                i++;
+            }
+            if(s > max) max = s;
+        }
+
+        return max;
+    }
+}
+```
+
 + Go 语言，用时竟然超过了java
 + 1180ms,faster than 6.13%
 ```go
