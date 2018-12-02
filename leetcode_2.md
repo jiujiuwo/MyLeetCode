@@ -283,7 +283,7 @@ class Solution {
 ```
 
 ## 14. Longest Common Prefix
-+ java O(N<sup>2</sup>)解法，注意判断输入为空的情况
++ java O(N<sup>2</sup>)解法，注意判断输入数组元素个数为0的情况
 + Runtime: 7 ms, faster than 61.14% of Java online submissions for Longest Common Prefix.
 ```java
 class Solution {
