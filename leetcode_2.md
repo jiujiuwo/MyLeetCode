@@ -281,3 +281,44 @@ class Solution {
     }
 }
 ```
+
+## 14. Longest Common Prefix
++ java O(N<sup>2</sup>)解法，注意判断输入为空的情况
++ Runtime: 7 ms, faster than 61.14% of Java online submissions for Longest Common Prefix.
+```java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+
+        if(strs.length<=0){
+            return "";
+        }
+
+        int len = strs[0].length();
+
+        for(int i = 0;i < strs.length;i++){
+            if(len > strs[i].length()){
+                len = strs[i].length();
+            }
+        }
+
+        boolean continued = true;
+        int index = 0;
+
+        for(int i =0;i < len;i++){
+            for(int j =0;j< strs.length-1;j++){
+                if(strs[j].charAt(i) == strs[j+1].charAt(i)){
+                    continue;
+                }else{
+                    continued = false;
+                }
+            }
+            if(!continued){
+                break;
+            }
+            index++;
+        }
+
+        return strs[0].substring(0,index);
+    }
+}
+```

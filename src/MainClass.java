@@ -1,57 +1,43 @@
 class Solution {
-    public int romanToInt(String s) {
-        int result = 0;
+    public String longestCommonPrefix(String[] strs) {
 
-        for(int i =0;i < s.length();i++){
-            char tmp = s.charAt(i);
-            if(tmp == 'M'){
-                result += 1000;
-            }else if(tmp == 'C' && (i+1) < s.length() && s.charAt(i+1) == 'M'){
-                result += 900;
-                i++;
-                continue;
-            }else if(tmp == 'D'){
-                result += 500;
-            }else if(tmp == 'C' && (i+1) < s.length() && s.charAt(i+1) == 'D'){
-                result += 400;
-                i++;
-                continue;
-            }else if(tmp == 'C'){
-                result += 100;
-            }else if(tmp == 'X' && (i+1) < s.length() && s.charAt(i+1) == 'C'){
-                result += 90;
-                i++;
-                continue;
-            }else if(tmp == 'L'){
-                result += 50;
-            }else if(tmp == 'X' && (i+1) < s.length() && s.charAt(i+1) == 'L'){
-                result += 40;
-                i++;
-                continue;
-            }else if(tmp == 'X'){
-                result += 10;
-            }else if(tmp == 'I'  && (i+1) < s.length() && s.charAt(i+1) == 'X'){
-                result += 9;
-                i++;
-                continue;
-            }else if(tmp == 'V'){
-                result += 5;
-            }else if(tmp == 'I' && (i+1) < s.length() && s.charAt(i+1) == 'V'){
-                result += 4;
-                i++;
-                continue;
-            }else if(tmp == 'I'){
-                result += 1;
+        //一开始没有判断输入数组的长度是否为0
+        if(strs.length<=0){
+            return "";
+        }
+
+        int len = strs[0].length();
+
+        for(int i = 0;i < strs.length;i++){
+            if(len > strs[i].length()){
+                len = strs[i].length();
             }
         }
 
-        return result;
+        boolean continued = true;
+        int index = 0;
+
+        for(int i =0;i < len;i++){
+            for(int j =0;j< strs.length-1;j++){
+                if(strs[j].charAt(i) == strs[j+1].charAt(i)){
+                    continue;
+                }else{
+                    continued = false;
+                }
+            }
+            if(!continued){
+                break;
+            }
+            index++;
+        }
+
+        return strs[0].substring(0,index);
     }
 }
 public class MainClass {
     public static void main(String[] args){
-        int[] tmp = {1,8,6,2,5,4,8,3,7};
-        int x = new Solution().romanToInt("MCMXCIV");
+        String[] tmp = {"flower","flow","flaw"};
+        String x = new Solution().longestCommonPrefix(tmp);
         System.out.println(x);
     }
 }
