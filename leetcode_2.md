@@ -224,3 +224,60 @@ class Solution {
 
 }
 ```
+
+## 13. Roman to Integer
++ java,O(n)解法，遍历所有字符求和
++ 一次性完成没有改动，Yeah!
++ Runtime: 35 ms, faster than 99.47% of Java online submissions for Roman to Integer.
+```java
+class Solution {
+    public int romanToInt(String s) {
+        int result = 0;
+
+        for(int i =0;i < s.length();i++){
+            char tmp = s.charAt(i);
+            if(tmp == 'M'){
+                result += 1000;
+            }else if(tmp == 'C' && (i+1) < s.length() && s.charAt(i+1) == 'M'){
+                result += 900;
+                i++;
+                continue;
+            }else if(tmp == 'D'){
+                result += 500;
+            }else if(tmp == 'C' && (i+1) < s.length() && s.charAt(i+1) == 'D'){
+                result += 400;
+                i++;
+                continue;
+            }else if(tmp == 'C'){
+                result += 100;
+            }else if(tmp == 'X' && (i+1) < s.length() && s.charAt(i+1) == 'C'){
+                result += 90;
+                i++;
+                continue;
+            }else if(tmp == 'L'){
+                result += 50;
+            }else if(tmp == 'X' && (i+1) < s.length() && s.charAt(i+1) == 'L'){
+                result += 40;
+                i++;
+                continue;
+            }else if(tmp == 'X'){
+                result += 10;
+            }else if(tmp == 'I'  && (i+1) < s.length() && s.charAt(i+1) == 'X'){
+                result += 9;
+                i++;
+                continue;
+            }else if(tmp == 'V'){
+                result += 5;
+            }else if(tmp == 'I' && (i+1) < s.length() && s.charAt(i+1) == 'V'){
+                result += 4;
+                i++;
+                continue;
+            }else if(tmp == 'I'){
+                result += 1;
+            }
+        }
+
+        return result;
+    }
+}
+```
