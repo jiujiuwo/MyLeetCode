@@ -322,3 +322,45 @@ class Solution {
     }
 }
 ```
+
+## 15. 3Sum
++ java O(N<sup>4</sup>)解法,预料之中的超时，但是之前的问题都解决了，应该是正解
++ 248 / 313 test cases passed.
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<>();
+        //取和
+        for(int i = 0;i < nums.length;i++){
+            for(int j =0;j < nums.length;j++){
+                for(int k=0;k < nums.length;k++){
+                    if(nums[i]+nums[j]+nums[k]==0&&i!=j&&i!=k&&j!=k){
+                        List<Integer> tmp = new ArrayList<>();
+                        tmp.add(nums[i]);
+                        tmp.add(nums[j]);
+                        tmp.add(nums[k]);
+                        //判断是否有重复
+                        boolean dup = false;
+                        for(List<Integer> item:result){
+                            //如果item中有一个0，而tmp中有三个0，则，item.containsAll(tmp)也为true
+                            //所以此处应改为 tmp.containsAll(item)&&item.containsAll(tmp) 教合适
+                            //若仅改为tmp.containsAll(item)也会出现类似的情况
+                            if(tmp.containsAll(item)&&item.containsAll(tmp)){
+                                dup = true;
+                            }
+                        }
+                        if(!dup){
+                            result.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+```
