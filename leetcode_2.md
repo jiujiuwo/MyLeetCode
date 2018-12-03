@@ -364,3 +364,116 @@ class Solution {
     }
 }
 ```
++ java，利用排序后的数组来判断是否有重复，还是超时
++ 265 / 313 test cases passed.
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> result = new ArrayList<>();
+        //取和
+        for(int i = 0;i < nums.length;i++){
+            for(int j =0;j < nums.length;j++){
+                for(int k=0;k < nums.length;k++){
+                    if(nums[i]+nums[j]+nums[k]==0&&i!=j&&i!=k&&j!=k){
+                        List<Integer> tmp = new ArrayList<>();
+                        tmp.add(nums[i]);
+                        tmp.add(nums[j]);
+                        tmp.add(nums[k]);
+
+                        //判断是否有重复
+                        boolean dup = false;
+/*                        for(List<Integer> item:result){
+                            //如果item中有一个0，而tmp中有三个0，则，item.containsAll(tmp)也为true
+                            //所以此处应改为 tmp.containsAll(item)&&item.containsAll(tmp) 教合适
+                            //若仅改为tmp.containsAll(item)也会出现类似的情况
+                            if(tmp.containsAll(item)&&item.containsAll(tmp)){
+                                dup = true;
+                            }
+                        }*/
+                        //通过排序来判断是否有重复
+                        Collections.sort(tmp);
+                        for(List<Integer> item:result){
+                            Collections.sort(item);
+                            if(item.get(0)==tmp.get(0)&&item.get(1)==tmp.get(1)&&item.get(2)==tmp.get(2)){
+                                dup = true;
+                                break;
+                            }else{
+                                continue;
+                            }
+                        }
+                        if(!dup){
+                            result.add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
++ Go语言，这次试用Go语言，相同的思路，结果还是超时
++ 253 / 313 test cases passed.
+```go
+package main
+
+import (
+	"fmt"
+	"sort"
+)
+
+func threeSum(nums []int) [][]int {
+
+	result := make([][]int,len(nums)*len(nums))
+	length := len(nums)
+	index :=0
+
+	if(length<=0){
+		return result
+	}
+
+	for i:=0;i<length;i++{
+		for j:=0;j<length;j++{
+			for k:=0;k<length;k++{
+				if nums[i] + nums[j] + nums[k] == 0 && i !=j && j!=k && i!=k{
+					result[index] = make([]int,3)
+					result[index][0] = nums[i]
+					result[index][1] = nums[j]
+					result[index][2] = nums[k]
+					if index>0{
+						sort.Ints(result[index])
+						dup := false
+						//为什么是从0到 index+1呢
+						for m:=0;m<index;m++{
+							sort.Ints(result[m])
+							fmt.Println(m,index)
+							if result[m][0]==result[index][0]&&result[m][1]==result[index][1]&&result[m][2]==result[index][2]{
+								dup = true
+								break
+							}else{
+								continue
+							}
+						}
+						if !dup{
+							//fmt.Println(i,j,k)
+							index++
+						}
+					}else{
+						index++
+					}
+				}
+			}
+		}
+	}
+
+	return result[:index]
+}
+
+```

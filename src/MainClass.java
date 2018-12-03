@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class Solution {
@@ -14,17 +15,26 @@ class Solution {
                         tmp.add(nums[i]);
                         tmp.add(nums[j]);
                         tmp.add(nums[k]);
-                        if(nums[i]==nums[j]&&nums[j]==nums[k]&&nums[i]==0){
-                            result.size();
-                        }
+
                         //判断是否有重复
                         boolean dup = false;
-                        for(List<Integer> item:result){
+/*                        for(List<Integer> item:result){
                             //如果item中有一个0，而tmp中有三个0，则，item.containsAll(tmp)也为true
                             //所以此处应改为 tmp.containsAll(item)&&item.containsAll(tmp) 教合适
                             //若仅改为tmp.containsAll(item)也会出现类似的情况
                             if(tmp.containsAll(item)&&item.containsAll(tmp)){
                                 dup = true;
+                            }
+                        }*/
+                        //通过排序来判断是否有重复
+                        Collections.sort(tmp);
+                        for(List<Integer> item:result){
+                            Collections.sort(item);
+                            if(item.get(0)==tmp.get(0)&&item.get(1)==tmp.get(1)&&item.get(2)==tmp.get(2)){
+                                dup = true;
+                                break;
+                            }else{
+                                continue;
                             }
                         }
                         if(!dup){
@@ -40,7 +50,7 @@ class Solution {
 }
 public class MainClass {
     public static void main(String[] args){
-        int[] tmp = {-6,-8,-9,4,-14,6,-10,7,12,13,4,9,7,14,-12,7,0,14,-1,-3,2,2,-3,11,-6,-10,-13,-13,1,-9,2,2,-2,8,-9,0,-9,-12,14,10,8,3,4,0,-6,7,14,9,6,-2,13,-15,8,-5,3,-13,-8,5,-11,0,11,6,-13,-14,-9,-15,-7,-11,10,-7,14,4,3,3,11,13,-13,11,-1,0,-6,-10,0,9,0,10,11,0,0,-14,-15,-12,-1,10,12,-2,2,-10,2,-2,-10,2,-13,1,12,5,-1,-15,1,5,-8,3,10,8};
+        int[] tmp = {-5,14,1,-2,11,11,-10,3,-6,0,3,-4,-9,-13,-8,-7,9,8,-7,11,12,-7,4,-7,-1,-5,13,1,-2,8,-13,0,-1,3,13,-13,-1,10,5,1,-13,-15,12,-7,-13,-11,-7,3,13,1,0,2,1,11,10,8,-8,1,-14,-3,-6,-12,12,0,6,2,2,-9,-3,14,-1,-9,14,-4,-1,8,-8,7,-4,12,-14,3,-9,2,0,-13,-13,-1,3,-12,11,4,-9,8,11,5,-5,-10,3,-1,-11,-13,5,-12,-10,11,11,-3,-5,14,-13,-4,-5,-7,6,2,-13,0,8,-3,4,4,-14,2};
         List<List<Integer>>  x = new Solution().threeSum(tmp);
         System.out.println(x);
         System.out.println(x.size());
