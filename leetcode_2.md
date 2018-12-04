@@ -477,3 +477,97 @@ func threeSum(nums []int) [][]int {
 }
 
 ```
++ Go语言，尝试先排序然后再去操作，果然速度变快了
++ 但是还是超时
++ 311 / 313 test cases passed.
+```go
+import (
+	"sort"
+)
+
+func threeSum(nums []int) [][]int {
+	length := len(nums)
+
+	if length<=0{
+		return nil
+	}
+	result := make([][]int,len(nums)*len(nums))
+	index :=0
+
+	sort.Ints(nums)
+
+	for i:=0;i<length;i++{
+		for j:=i+1;j<length;j++{
+			for k:=j+1;k<length;k++{
+				if nums[i] + nums[j] + nums[k] == 0{
+					result[index] = make([]int,3)
+					result[index][0] = nums[i]
+					result[index][1] = nums[j]
+					result[index][2] = nums[k]
+					if index>0{
+						//sort.Ints(result[index])
+						dup := false
+						//为什么是从0到 index+1呢
+						for m:=0;m<index;m++{
+							//sort.Ints(result[m])
+							//fmt.Println(m,index)
+							if result[m][0]==result[index][0]&&result[m][1]==result[index][1]&&result[m][2]==result[index][2]{
+								dup = true
+								break
+							}
+						}
+						if !dup{
+							//fmt.Println(i,j,k)
+							index++
+						}
+					}else{
+						index++
+					}
+				}
+			}
+		}
+	}
+
+	return result[:index]
+}
+```
+
++ 别人的解法，java,据说是O(N<sup>2</sup>)
++ Runtime: 71 ms, faster than 40.69% of Java online submissions for 3Sum.
+```java
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> threeSum(int[] num) {
+        //首先对整个数组进行排序
+        Arrays.sort(num);
+        List<List<Integer>> res = new LinkedList<>();
+        //第一重循环，从下标 0 到 num.length-2
+        for (int i = 0; i < num.length - 2; i++) {
+            //去重，如果 num[i] 和 num[i-1]相同则跳过
+            if (i == 0 || (i > 0 && num[i] != num[i - 1])) {
+                //num[i] + num[i+1]+num[hi] = 0,num[i+1]+num[hi] = 0 - num[i]
+                int lo = i + 1, hi = num.length - 1, sum = 0 - num[i];
+                while (lo < hi) {
+                    if (num[lo] + num[hi] == sum) {
+                        res.add(Arrays.asList(num[i], num[lo], num[hi]));
+                        //这两行去重
+                        while (lo < hi && num[lo] == num[lo + 1]) lo++;
+                        while (lo < hi && num[hi] == num[hi - 1]) hi--;
+                        lo++;
+                        hi--;
+                    } else if (num[lo] + num[hi] < sum) {
+                        lo++;
+                    } else {
+                        hi--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}
+```
