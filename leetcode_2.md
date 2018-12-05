@@ -680,3 +680,52 @@ func threeSum(nums []int) [][]int {
 	return result[:index]
 }
 ```
+
+## 16. 3Sum Closest
++ 挺简单的一道题目，结果做了一个多小时，思路不清晰
++ 一个调节思路的方法是编写程序边写注释
++ Runtime: 12 ms, faster than 73.82% of Java online submissions for 3Sum Closest.
+```java
+import java.util.Arrays;
+
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+
+        int result = 0;
+        int distance = Integer.MAX_VALUE;
+        //先从小打到大排序
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            int low = i + 1, high = nums.length - 1;
+            while (low < high) {
+                //求出三个数的和与target的差
+                //target >0
+                int tmp;
+                tmp = nums[i] + nums[low] + nums[high] - target;
+               // System.out.println(i + " "+low + " "+high+" "+tmp+" "+result+" "+distance);
+
+                //如果差<0
+                if (tmp < 0) {
+                    tmp = -tmp;
+                    if (tmp < distance) {
+                        result = -tmp + target;
+                        distance = tmp;
+                    }
+                    low++;
+                } else {  //如果差>0
+                    if (tmp < distance) {
+                        result = tmp + target;
+                        distance = tmp;
+                    }
+                    high--;
+                }
+            }
+        }
+
+
+        return result;
+    }
+}
+
+```
