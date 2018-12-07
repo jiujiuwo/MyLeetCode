@@ -797,3 +797,124 @@ func main() {
 	fmt.Println(letterCombinations("234"))
 }
 ```
+
+## 18. 4Sum
++ 4 Sum好难，没有做出来，看别人的代码也似懂非懂
++ java,未完成，我自己代码
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        //首先对原输入数组进行排序
+        Arrays.sort(nums);
+
+        for(int tmp:nums){
+            System.out.printf(tmp+" ");
+        }
+        System.out.println();
+        //用来存储最后的结果
+        List<List<Integer>>  result = new ArrayList<>();
+
+        for(int i = 0;i < nums.length-3;i++){
+            //如果出现了重复的i,跳过
+            if(i>0&&nums[i]==nums[i-1]){
+                i++;
+            }
+
+            for(int j = i+1;j < nums.length-2;j++){     //二重循环，遍历i,j
+                //while循环，遍历low,high
+                //如果出现了重复的j,跳过去一个
+                while(j<nums.length-2&&j>1&&nums[j]==nums[j+1]){
+                    j++;
+                }
+                int low = j+1,high = nums.length-1;
+
+                // System.out.println(i+" "+j);
+               while(low<high){
+                  // System.out.println(low+" "+high);
+                    int tmp = nums[i]+nums[j]+nums[low]+nums[high];
+                    if(tmp - target==0){
+                        result.add(Arrays.asList(nums[i],nums[j],nums[low],nums[high]));
+                        System.out.println(i+" "+j+" "+low+" "+high);
+                        low++;
+                        high--;
+                    }else if(tmp - target >0){
+                        high--;
+                    }else{
+                        low++;
+                    }
+
+                   //这个题目不需要对后面的元素进行过滤，因为他们就是不同的
+                }
+            }
+        }
+        return result;
+    }
+}
+```
++ 别人的思路和解法
++ 如果你已经通过使用排序的方法实现了3sum和4sum：最后将它们减少到2sum,你可能已经感到
+所有的ksumd都可以分为两个问题
+    +  2sum问题
+    + 将k sum 和问题减少到k-1 sum和问题
+    
++ 使用递归的方法解题
+```java
+    public class Solution {
+        int len = 0;
+        public List<List<Integer>> fourSum(int[] nums, int target) {
+            len = nums.length;
+            Arrays.sort(nums);
+            return kSum(nums, target, 4, 0);
+        }
+       private ArrayList<List<Integer>> kSum(int[] nums, int target, int k, int index) {
+            ArrayList<List<Integer>> res = new ArrayList<List<Integer>>();
+            if(index >= len) {
+                return res;
+            }
+            if(k == 2) {
+            	int i = index, j = len - 1;
+            	while(i < j) {
+                    //find a pair
+            	    if(target - nums[i] == nums[j]) {
+            	    	List<Integer> temp = new ArrayList<>();
+                    	temp.add(nums[i]);
+                    	temp.add(target-nums[i]);
+                        res.add(temp);
+                        //skip duplication
+                        while(i<j && nums[i]==nums[i+1]) i++;
+                        while(i<j && nums[j-1]==nums[j]) j--;
+                        i++;
+                        j--;
+                    //move left bound
+            	    } else if (target - nums[i] > nums[j]) {
+            	        i++;
+                    //move right bound
+            	    } else {
+            	        j--;
+            	    }
+            	}
+            } else{
+                for (int i = index; i < len - k + 1; i++) {
+                    //use current number to reduce ksum into k-1sum
+                    ArrayList<List<Integer>> temp = kSum(nums, target - nums[i], k-1, i+1);
+                    if(temp != null){
+                        //add previous results
+                        for (List<Integer> t : temp) {
+                            t.add(0, nums[i]);
+                        }
+                        res.addAll(temp);
+                    }
+                    while (i < len-1 && nums[i] == nums[i+1]) {
+                        //skip duplicated numbers
+                        i++;
+                    }
+                }
+            }
+            return res;
+        }
+    }
+```
