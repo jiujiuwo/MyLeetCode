@@ -1,38 +1,49 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 class Solution {
-    public int threeSumClosest(int[] nums, int target) {
-
-        //用来表示结果，即三个数的和
-        int result = 0;
-        //用来表示距离
-        int distance = Integer.MAX_VALUE;
-        //先从小打到大排序
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        //首先对原输入数组进行排序
         Arrays.sort(nums);
 
-        for (int i = 0; i < nums.length - 2; i++) {
-            int low = i + 1, high = nums.length - 1;
-            while (low < high) {
-                //求出三个数的和与target的差
-                //target >0
-                int tmp;
-                tmp = nums[i] + nums[low] + nums[high] - target;
-                System.out.println(i + " "+low + " "+high+" "+tmp+" "+result+" "+distance);
+        for(int tmp:nums){
+            System.out.printf(tmp+" ");
+        }
+        System.out.println();
+        //用来存储最后的结果
+        List<List<Integer>>  result = new ArrayList<>();
 
-                //如果差<0
-                if (tmp < 0) {
-                    tmp = -tmp;
-                    if (tmp < distance) {
-                        result = -tmp + target;
-                        distance = tmp;
+        for(int i = 0;i < nums.length-3;i++){
+            //如果出现了重复的i,跳过
+            if(i>0&&nums[i]==nums[i-1]){
+                i++;
+            }
+
+            for(int j = i+1;j < nums.length-2;j++){     //二重循环，遍历i,j
+                //while循环，遍历low,high
+                //如果出现了重复的j,跳过去一个
+                while(j<nums.length-2&&j>1&&nums[j]==nums[j+1]){
+                    j++;
+                }
+                int low = j+1,high = nums.length-1;
+
+                // System.out.println(i+" "+j);
+               while(low<high){
+                  // System.out.println(low+" "+high);
+                    int tmp = nums[i]+nums[j]+nums[low]+nums[high];
+                    if(tmp - target==0){
+                        result.add(Arrays.asList(nums[i],nums[j],nums[low],nums[high]));
+                        System.out.println(i+" "+j+" "+low+" "+high);
+                        low++;
+                        high--;
+                    }else if(tmp - target >0){
+                        high--;
+                    }else{
+                        low++;
                     }
-                    low++;
-                } else {  //如果差>0
-                    if (tmp < distance) {
-                        result = tmp + target;
-                        distance = tmp;
-                    }
-                    high--;
+
+                   //这个题目不需要对后面的元素进行过滤，因为他们就是不同的
                 }
             }
         }
@@ -42,8 +53,8 @@ class Solution {
 
 public class MainClass {
     public static void main(String[] args) {
-        int tmp[] = {1, 1, 1, 0};
-        int x = new Solution().threeSumClosest(tmp, -100);
+        int tmp[] = {-1,0,-5,-2,-2,-4,0,1,-2};
+        List<List<Integer>> x = new Solution().fourSum(tmp, -9);
         System.out.println(x);
     }
 }
