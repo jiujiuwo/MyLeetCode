@@ -919,3 +919,67 @@ class Solution {
     }
     
 ```
+
+## 19. Remove Nth Node From End of List
++ java,使用链表存储每一个元素
++ Runtime: 11 ms, faster than 29.74% of Java online submissions for Remove Nth Node From End of List.
+```java
+import java.util.LinkedList;
+import java.util.List;
+
+//这道题目一开始就理解错了题意，看错了，题目是要删除倒数第n个元素
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        if(n<=0||head==null){
+            return head;
+        }else{
+            List<ListNode> nodes = new LinkedList<>();
+            ListNode ptr;
+            ptr = head;
+            while(ptr!=null){
+                nodes.add(ptr);
+                ptr = ptr.next;
+            }
+
+            //如果要删除的 倒数第n个元素比整个链表的大小要小，则取到链表的前一个，然后node.next = node.next.next
+            if(nodes.size()>n){
+                ListNode nodeN = nodes.get(nodes.size()-n-1);
+                if(nodeN.next!=null){
+                    nodeN.next = nodeN.next.next;
+                }
+                //否则，就是n与元素个数相同，则，没有前一个元素，因此是直接将头部去掉
+            }else if(nodes.size()==n){
+                head = head.next;
+            }
+        }
+        return head;
+    }
+}
+```
++ 附上别人使用双指针的方法
++ Runtime: 6 ms, faster than 98.81% of Java online submissions for Remove Nth Node From End of List.
+```java
+
+class Solution {
+public ListNode removeNthFromEnd(ListNode head, int n) {
+    
+    ListNode start = new ListNode(0);
+    ListNode slow = start, fast = start;
+    slow.next = head;
+    
+    //Move fast in front so that the gap between slow and fast becomes n
+    for(int i=1; i<=n+1; i++)   {
+        fast = fast.next;
+    }
+    //Move fast to the end, maintaining the gap
+    while(fast != null) {
+        slow = slow.next;
+        fast = fast.next;
+    }
+    //Skip the desired node
+    slow.next = slow.next.next;
+    return start.next;
+}
+}
+```
