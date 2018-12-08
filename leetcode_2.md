@@ -983,3 +983,84 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 }
 }
 ```
+## 20. Valid Parentheses
++ 判断括号是否是有效的，使用栈实现
++ java语言，Runtime: 8 ms, faster than 28.12% of Java online submissions for Valid Parentheses.
+```java
+import java.util.Stack;
+
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for(int i=0;i < s.length();i++){
+            char tmp = s.charAt(i);
+            if(tmp == '('||tmp=='['||tmp=='{'){
+                stack.push(tmp);
+            }else if(tmp ==')'){
+                if(stack.isEmpty()||stack.pop()!='('){
+                    return false;
+                }
+            }else if(tmp =='}'){
+                if(stack.isEmpty()||stack.pop()!='{'){
+                    return false;
+                }
+            }else if(tmp ==']'){
+                if(stack.isEmpty()||stack.pop()!='['){
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+```
++ 之前的写法，用时少3ms
++ Your runtime beats 85.78 % of java submissions.
+```java
+import java.util.Stack;
+
+class Solution {
+    public boolean isValid(String s) {
+    	Stack<Character> charStack = new Stack<>();
+    	
+    	for(int i = 0;i < s.length();i++){
+    		if(s.charAt(i)=='('||s.charAt(i)=='['||s.charAt(i)=='{'){
+    			charStack.push(s.charAt(i));
+    		}else if(s.charAt(i)==')'){
+    			if(charStack.isEmpty()){
+    				return false;
+    			}
+    			char result = charStack.pop();
+    			if(result!='('){
+    				return false;
+    			}
+    		}else if(s.charAt(i)==']'){
+    			if(charStack.isEmpty()){
+    				return false;
+    			}
+    			char result = charStack.pop();
+    			if(result!='['){
+    				return false;
+    			}
+    		}else if(s.charAt(i)=='}'){
+    			if(charStack.isEmpty()){
+    				return false;
+    			}
+    			char result = charStack.pop();
+    			if(result!='{'){
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	if(charStack.isEmpty()){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    	
+
+    }
+}
+```
