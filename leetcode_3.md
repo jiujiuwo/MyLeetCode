@@ -145,3 +145,54 @@ class Solution {
     }
 }
 ```
+
+## 26. Remove Duplicates from Sorted Array
++ java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了
++ Runtime: 99 ms, faster than 2.80% of Java online submissions for Remove Duplicates from Sorted Array.
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int len = nums.length;
+        for(int i=0,index=0;i<nums.length-1;i++){
+            if(nums[i]==nums[i+1]){
+                //int tmp = nums[nums.length-1];
+                for(int j=i;j<nums.length-1;j++){
+                    nums[j] = nums[j+1];
+                }
+                i--;
+                len--;
+                //nums[nums.length-1] = tmp;
+            }
+            index++;
+            if(index==nums.length-1){
+                break;
+            }
+        }
+
+        return len;
+    }
+}
+```
++ 双指针做法,唉能想出这种方法的人，我真的是自愧不如啊
++ Runtime: 9 ms, faster than 49.13% of Java online submissions for 
+Remove Duplicates from Sorted Array.
++ 思路
+    + 因为数组已经是有序的了，我们使用两个指针 i和j,i是走的慢的指针，j是走的快的指针
+    只要nums[i]==nums[j],我们就增加j,跳过重复的元素
+    + 当遇到nums[i]!=nums[j]时，重复运行已经结束，我们需要把nums[j]的值赋给nums[i+1],
+    然后增加i,进行相同的处理，直到j走到最后
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) return 0;
+        int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
+    }
+}
+```
