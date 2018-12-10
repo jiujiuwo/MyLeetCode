@@ -1,38 +1,27 @@
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 class Solution {
+    public ListNode swapPairs(ListNode head) {
 
-    public ListNode mergeKLists(ListNode[] lists) {
-
-        if(lists==null||lists.length==0){
-            return null;
-        }
-
-        List<Integer> nums = new LinkedList<>();
-
-        for(int i=0;i <lists.length;i++){
-            ListNode ptr = lists[i];
-            while (ptr!=null){
-                nums.add(ptr.val);
-                ptr = ptr.next;
-            }
-        }
-        Collections.sort(nums);
-        if(nums.size()>0){
-            ListNode head = new ListNode(nums.get(0));
-            ListNode ptr = head;
-
-            for(int i=1;i<nums.size();i++){
-                ptr.next = new ListNode(nums.get(i));
-                ptr = ptr.next;
-            }
-
+        if(head==null){
             return head;
-        }else{
-            return null;
         }
+
+        ListNode ptr=head;
+        int index =0;
+        while (ptr!=null){
+            if(index % 2 == 0){
+                if(ptr.next!=null){
+                    int tmp = ptr.val;
+                    ptr.val = ptr.next.val;
+                    ptr.next.val = tmp;
+                }
+                ptr = ptr.next;
+            }else{
+                ptr = ptr.next;
+            }
+            index++;
+        }
+
+        return null;
     }
 }
 public class MainClass {

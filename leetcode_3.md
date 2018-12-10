@@ -187,7 +187,45 @@ class Solution {
     }
 }
 ```
+## 24. Swap Nodes in Pairs
++ java,按照下标的奇偶来交换元素
++ Runtime: 2 ms, faster than 99.98% of Java online submissions for Swap Nodes in Pairs.
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
 
+        if(head==null){
+            return head;
+        }
+
+        ListNode ptr=head;
+        int index =0;
+        while (ptr!=null){
+            if(index % 2 == 0){
+                if(ptr.next!=null){
+                    int tmp = ptr.val;
+                    ptr.val = ptr.next.val;
+                    ptr.next.val = tmp;
+                }
+                ptr = ptr.next;
+            }else{
+                ptr = ptr.next;
+            }
+            index++;
+        }
+
+        return head;
+    }
+}
+```
 
 ## 26. Remove Duplicates from Sorted Array
 + java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了
