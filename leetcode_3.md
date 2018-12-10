@@ -145,6 +145,49 @@ class Solution {
     }
 }
 ```
+## 23. Merge k Sorted Lists
++ java,最简单的做法，先收集数字，然后排序，然后构建结果
++ Your runtime beats 24.69 % of java submissions
+```java
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+class Solution {
+
+    public ListNode mergeKLists(ListNode[] lists) {
+
+        if(lists==null||lists.length==0){
+            return null;
+        }
+
+        List<Integer> nums = new LinkedList<>();
+
+        for(int i=0;i <lists.length;i++){
+            ListNode ptr = lists[i];
+            while (ptr!=null){
+                nums.add(ptr.val);
+                ptr = ptr.next;
+            }
+        }
+        Collections.sort(nums);
+        if(nums.size()>0){
+            ListNode head = new ListNode(nums.get(0));
+            ListNode ptr = head;
+
+            for(int i=1;i<nums.size();i++){
+                ptr.next = new ListNode(nums.get(i));
+                ptr = ptr.next;
+            }
+
+            return head;
+        }else{
+            return null;
+        }
+    }
+}
+```
+
 
 ## 26. Remove Duplicates from Sorted Array
 + java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了
