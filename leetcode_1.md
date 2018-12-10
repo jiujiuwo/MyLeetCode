@@ -229,7 +229,7 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 }
 ```
 
-#### 5.Longest Palindromic Substring（最长回文子串） 2018/11/19 
+#### 5.Longest Palindromic Substring（最长回文子串） 2018/11/19 *****
 + java 超时解，暴力解法，难点在回文串的判断
 ```java
 class Solution {
@@ -595,7 +595,7 @@ func isPalindrome(x int) bool {
 
 ```
 
-#### 10. Regular Expression Matching (正则表达式匹配)
+#### 10. Regular Expression Matching (正则表达式匹配) *****
 + hard类型的一道题目，但是可以直接使用java的正则表达式匹配求解
 
 + java,使用String类的match函数

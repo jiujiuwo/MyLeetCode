@@ -38,7 +38,7 @@ class Solution {
 }
 ```
 
-## 22. Generate Parentheses
+## 22. Generate Parentheses *****
 + 没有自己的思路，想到了暴力破解法，但是，怎么样列举出所有的情况还是没有想出来
 
 + java，暴力破解法
