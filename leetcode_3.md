@@ -283,6 +283,8 @@ class Solution {
     }
 }
 ```
+## 25. Reverse Nodes in k-Group
+
 
 ## 26. Remove Duplicates from Sorted Array
 + java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了
