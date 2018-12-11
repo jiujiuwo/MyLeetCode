@@ -328,3 +328,31 @@ class Solution {
     }
 }
 ```
+
+## 28. Implement strStr()
++ java,直接调用String的IndexOf方法
++ 2ms,Your runtime beats 100.00 % of java submissions.
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+}
+```
++ java，使用String 的subString和equals方法
++ 3ms,Your runtime beats 99.64 % of java submissions.
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+
+        //注意这里是 <=
+        for(int i=0;i<=haystack.length()-needle.length();i++){
+            //System.out.println(haystack.substring(i,i+needle.length()));
+            if(haystack.substring(i,i+needle.length()).equals(needle)){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+```

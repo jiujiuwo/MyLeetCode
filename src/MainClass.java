@@ -1,20 +1,19 @@
 class Solution {
-    public int removeElement(int[] nums, int val) {
-        int i =0;
-        //只取前几个，不关心后面的值，所以可行
-        for(int j=0;j<nums.length;j++){
-            if(nums[j]!=val){
-                nums[i] = nums[j];
-                i++;
+    public int strStr(String haystack, String needle) {
+
+        //注意这里是 <=
+        for(int i=0;i<=haystack.length()-needle.length();i++){
+            //System.out.println(haystack.substring(i,i+needle.length()));
+            if(haystack.substring(i,i+needle.length()).equals(needle)){
+                return i;
             }
         }
-
-        return i;
+        return -1;
     }
 }
 public class MainClass {
     public static void main(String[] args){
         int[] nums = {3,2,2,3};
-        System.out.println(new Solution().removeElement(nums,3));
+        System.out.println(new Solution().strStr("hello","ll"));
     }
 }
