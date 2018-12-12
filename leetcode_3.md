@@ -284,7 +284,95 @@ class Solution {
 }
 ```
 ## 25. Reverse Nodes in k-Group
++ java，自己熬了两天写出来的破方法，也不知道叫啥方法
++ Runtime: 7 ms, faster than 15.88% of Java online submissions for Reverse Nodes in k-Group.
+```java
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
 
+        ListNode headPtr = head;
+        ListNode result = null;
+        ListNode resultPtr = null;
+
+        //检查特殊的输入，例如，整个list的长度不足k,或者k<2则直接返回原list
+        int length = 0;
+        while (headPtr!=null){
+            length++;
+            headPtr = headPtr.next;
+        }
+        if(length<k||k<2){
+            return head;
+        }
+
+        headPtr = head;
+
+        while (headPtr != null) {
+            //每k个节点转换一次，每次转化完的新数组，返回下一组的首地址
+            ListNode[] results = reverseGroup(result,headPtr,k);
+            result = results[0];
+            headPtr = results[1];
+        }
+
+        return result;
+    }
+    /*
+        result 为结果数组
+        headPtr 为当前位置的指针
+        k 为原输入中的k
+     */
+    private ListNode[] reverseGroup(ListNode result,ListNode headPtr,int k) {
+        //nums用来存放带逆转的节点值
+        ListNode[] newNodes = new ListNode[k];
+
+        //将新节点进行串联
+        for (int i = 0; i < k; i++) {
+            newNodes[i] = new ListNode(0);
+        }
+        for (int i = 0; i < k - 1; i++) {
+            newNodes[i].next = newNodes[i + 1];
+        }
+        //一开始，它指向原来的数组，后来，它指向新的数组
+        ListNode tmpHead;
+        ListNode pre = null;
+        if(result==null){
+             tmpHead = headPtr;
+        }else{
+            //要改变result后面的元素，因此要定位到最后的位置
+            pre = headPtr;
+            tmpHead = headPtr.next;
+        }
+        int index = k - 1;
+
+        while (tmpHead != null) {
+            //倒序开始给新的list赋值
+            newNodes[index].val = tmpHead.val;
+            index--;
+            //指针向后移1
+            tmpHead = tmpHead.next;
+            //如果index减小到了0以下
+            if (index < 0) {    //如果index减小到了0，说明这组可以转换，返回的头信心指向下一个
+                if(result==null){
+                    result = newNodes[0];
+                }else{
+                   pre.next = newNodes[0];
+                }
+                newNodes[k - 1].next = tmpHead;
+                headPtr =  newNodes[k - 1];
+                break;
+            }
+        }
+
+        if(index>=0){
+            headPtr = tmpHead;
+        }
+
+        newNodes[0] = result;
+        newNodes[1] = headPtr;
+        return newNodes;
+    }
+}
+
+```
 
 ## 26. Remove Duplicates from Sorted Array
 + java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了
