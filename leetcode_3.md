@@ -552,3 +552,23 @@ class Solution {
     }
 }
 ```
+
+## 35. Search Insert Position
++ java做法，复杂度O(N),
++ Runtime: 3 ms, faster than 74.98% of Java online submissions for Search Insert Position.
+```java
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+
+        int result = 0;
+
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>=target){
+                return i;
+            }
+        }
+
+        return nums.length;
+    }
+}
+```
