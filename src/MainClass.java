@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,20 @@ class Solution {
 
     private void generateAllString(String[] words, int start, int end) {
 
+=======
+class Solution {
+    public int searchInsert(int[] nums, int target) {
+
+        int result = 0;
+
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]>=target){
+                return i;
+            }
+        }
+
+        return nums.length;
+>>>>>>> c7b04e2e7585a94091f504028ddf3642e80d3ad8
     }
 }
 
