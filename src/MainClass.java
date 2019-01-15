@@ -1,51 +1,54 @@
+import java.util.LinkedList;
+import java.util.List;
+
 class Solution {
-    public int divide(int dividend, int divisor) {
+    public List<Integer> findSubstring(String s, String[] words) {
 
-        long  beichushu = dividend;
-        long  chushu = divisor;
-        int sign = 1;
-        long result = 0;
+        List<Integer> resut = new LinkedList<>();
+        List<Integer> firstIndex = new LinkedList<>();
 
-        if(beichushu<0){
-            //这里，如果输入是-2147483648，则取反以后，超过了int负数范围，造成dividend依然是负数
-            beichushu = -beichushu;
-            sign = sign * -1;
-        }
-
-        if(divisor<0){
-            chushu = -chushu;
-            sign = sign*-1;
-        }
-
-        int tmp = 0;
-
-        if(chushu==1){
-            if(sign*beichushu>=Integer.MAX_VALUE){
-                return Integer.MAX_VALUE;
-            }else if(sign*beichushu<=Integer.MIN_VALUE){
-                return Integer.MIN_VALUE;
-            }else{
-                return (int)beichushu*sign;
+        for (int i = 0; i < words.length; i++) {
+            int index = s.indexOf(words[i]);
+            if (index > -1) {
+                if (!firstIndex.contains(index)) {
+                    firstIndex.add(index);
+                } else {
+                    String tmp = s.substring(index, index + words[i].length());
+                    index = tmp.indexOf(words[i]);
+                    if (index > -1) {
+                        index += words[i].length() + index;
+                        firstIndex.add(index);
+                    } else {
+                        return resut;
+                    }
+                }
             }
         }
 
-        //当输入   -2147483648，-1时，超时，用时太长。
-        while (tmp + chushu<=beichushu){
-            tmp += chushu;
-            result++;
-            //System.out.println(result);
-            if(result >= Integer.MAX_VALUE){
-                return Integer.MAX_VALUE;
-            }
-        }
+        String tmp = s;
 
-        return (int)result*sign;
+        generateAllString(words, 0, words.length);
+
+        return resut;
+    }
+
+    private void generateAllString(String[] words, int start, int end) {
+
     }
 }
+
 public class MainClass {
 
     public static void main(String[] args) {
-        System.out.println(new Solution().divide(-2147483648,-1));
-        System.out.println(Integer.MAX_VALUE);
+        String a = "acb";
+        String b = a;
+        b = b.substring(1);
+        System.out.println(a);
+        System.out.println(b);
+
+        ListNode nodea = new ListNode(1);
+        ListNode nodeb = nodea;
+        nodeb.val = 2;
+        System.out.println(nodea.val);
     }
 }

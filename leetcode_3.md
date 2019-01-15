@@ -506,6 +506,7 @@ class Solution {
 
 ## 29. Divide Two Integers
 + java,题目不难，但是超时，使用加法求解的话，除数小时太耗时
++ 正确的做法好像是使用 位操作，位运算
 ```java
 class Solution {
     public int divide(int dividend, int divisor) {
