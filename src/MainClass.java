@@ -1,69 +1,42 @@
-<<<<<<< HEAD
-import java.util.LinkedList;
-import java.util.List;
+public class MainClass{
+    public int divide(int dividend, int divisor) {
+        //Reduce the problem to positive long integer to make it easier.
+        //Use long to avoid integer overflow cases.
+        int sign = 1;
+        if ((dividend > 0 && divisor < 0) || (dividend  < 0 && divisor > 0))
+            sign = -1;
+        long ldividend = Math.abs((long) dividend);
+        long ldivisor = Math.abs((long) divisor);
 
-class Solution {
-    public List<Integer> findSubstring(String s, String[] words) {
+        //Take care the edge cases.
+        if (ldivisor == 0) return Integer.MAX_VALUE;
+        if ((ldividend == 0) || (ldividend < ldivisor))	return 0;
 
-        List<Integer> resut = new LinkedList<>();
-        List<Integer> firstIndex = new LinkedList<>();
+        long lans = ldivide(ldividend, ldivisor);
 
-        for (int i = 0; i < words.length; i++) {
-            int index = s.indexOf(words[i]);
-            if (index > -1) {
-                if (!firstIndex.contains(index)) {
-                    firstIndex.add(index);
-                } else {
-                    String tmp = s.substring(index, index + words[i].length());
-                    index = tmp.indexOf(words[i]);
-                    if (index > -1) {
-                        index += words[i].length() + index;
-                        firstIndex.add(index);
-                    } else {
-                        return resut;
-                    }
-                }
-            }
+        int ans;
+        if (lans > Integer.MAX_VALUE){ //Handle overflow.
+            ans = (sign == 1)? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        } else {
+            ans = (int) (sign * lans);
         }
-
-        String tmp = s;
-
-        generateAllString(words, 0, words.length);
-
-        return resut;
+        return ans;
     }
 
-    private void generateAllString(String[] words, int start, int end) {
+    private long ldivide(long ldividend, long ldivisor) {
+        // Recursion exit condition
+        if (ldividend < ldivisor) return 0;
 
-=======
-class Solution {
-    public int searchInsert(int[] nums, int target) {
-
-        int result = 0;
-
-        for(int i=0;i<nums.length;i++){
-            if(nums[i]>=target){
-                return i;
-            }
+        //  Find the largest multiple so that (divisor * multiple <= dividend),
+        //  whereas we are moving with stride 1, 2, 4, 8, 16...2^n for performance reason.
+        //  Think this as a binary search.
+        long sum = ldivisor;
+        long multiple = 1;
+        while ((sum+sum) <= ldividend) {
+            sum += sum;
+            multiple += multiple;
         }
-
-        return nums.length;
->>>>>>> c7b04e2e7585a94091f504028ddf3642e80d3ad8
-    }
-}
-
-public class MainClass {
-
-    public static void main(String[] args) {
-        String a = "acb";
-        String b = a;
-        b = b.substring(1);
-        System.out.println(a);
-        System.out.println(b);
-
-        ListNode nodea = new ListNode(1);
-        ListNode nodeb = nodea;
-        nodeb.val = 2;
-        System.out.println(nodea.val);
+        //Look for additional value for the multiple from the reminder (dividend - sum) recursively.
+        return multiple + ldivide(ldividend - sum, ldivisor);
     }
 }
