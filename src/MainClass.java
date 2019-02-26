@@ -1,42 +1,48 @@
-public class MainClass{
-    public int divide(int dividend, int divisor) {
-        //Reduce the problem to positive long integer to make it easier.
-        //Use long to avoid integer overflow cases.
-        int sign = 1;
-        if ((dividend > 0 && divisor < 0) || (dividend  < 0 && divisor > 0))
-            sign = -1;
-        long ldividend = Math.abs((long) dividend);
-        long ldivisor = Math.abs((long) divisor);
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-        //Take care the edge cases.
-        if (ldivisor == 0) return Integer.MAX_VALUE;
-        if ((ldividend == 0) || (ldividend < ldivisor))	return 0;
+class Solution {
 
-        long lans = ldivide(ldividend, ldivisor);
+    public String countAndSay(int n) {
 
-        int ans;
-        if (lans > Integer.MAX_VALUE){ //Handle overflow.
-            ans = (sign == 1)? Integer.MAX_VALUE : Integer.MIN_VALUE;
-        } else {
-            ans = (int) (sign * lans);
+        String pre = "1";
+        String result = "";
+
+        if(1 == n){
+            return pre;
+        }else{
+            for(int j=0;j<n;j++){
+                int count = 0;
+                for(int i=0;i<pre.length();i++){
+                    count++;
+                    if(i == pre.length()-1 || pre.charAt(i) != pre.charAt(i+1) ){
+                        String tmp = count +""+pre.charAt(i);
+                        result+=tmp;
+                        count = 0;
+                    }
+                }
+                pre = result;
+                //System.out.println(pre);
+                result = "";
+            }
         }
-        return ans;
+        return pre;
     }
+}
 
-    private long ldivide(long ldividend, long ldivisor) {
-        // Recursion exit condition
-        if (ldividend < ldivisor) return 0;
+public class MainClass {
+    public static void main(String[] args) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while ((line = in.readLine()) != null) {
+            int n = Integer.parseInt(line);
 
-        //  Find the largest multiple so that (divisor * multiple <= dividend),
-        //  whereas we are moving with stride 1, 2, 4, 8, 16...2^n for performance reason.
-        //  Think this as a binary search.
-        long sum = ldivisor;
-        long multiple = 1;
-        while ((sum+sum) <= ldividend) {
-            sum += sum;
-            multiple += multiple;
+            String ret = new Solution().countAndSay(n);
+
+            String out = (ret);
+
+            System.out.print(out);
         }
-        //Look for additional value for the multiple from the reminder (dividend - sum) recursively.
-        return multiple + ldivide(ldividend - sum, ldivisor);
     }
 }
