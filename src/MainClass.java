@@ -2,45 +2,71 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+        reverse(nums,0,n-1);
+        reverse(nums,0,k-1);
+        reverse(nums,k,n-1);
+    }
 
-    public String countAndSay(int n) {
-
-        String pre = "1";
-        String result = "";
-
-        if(1 == n){
-            return pre;
-        }else{
-            for(int j=0;j<n;j++){
-                int count = 0;
-                for(int i=0;i<pre.length();i++){
-                    count++;
-                    if(i == pre.length()-1 || pre.charAt(i) != pre.charAt(i+1) ){
-                        String tmp = count +""+pre.charAt(i);
-                        result+=tmp;
-                        count = 0;
-                    }
-                }
-                pre = result;
-                //System.out.println(pre);
-                result = "";
-            }
+    private void reverse(int[] nums, int left, int right) {
+        while(left<right){
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            right--;
+            left++;
         }
-        return pre;
     }
 }
 
 public class MainClass {
+    public static int[] stringToIntegerArray(String input) {
+        input = input.trim();
+        input = input.substring(1, input.length() - 1);
+        if (input.length() == 0) {
+            return new int[0];
+        }
+
+        String[] parts = input.split(",");
+        int[] output = new int[parts.length];
+        for (int index = 0; index < parts.length; index++) {
+            String part = parts[index].trim();
+            output[index] = Integer.parseInt(part);
+        }
+        return output;
+    }
+
+    public static String integerArrayToString(int[] nums, int length) {
+        if (length == 0) {
+            return "[]";
+        }
+
+        String result = "";
+        for (int index = 0; index < length; index++) {
+            int number = nums[index];
+            result += Integer.toString(number) + ", ";
+        }
+        return "[" + result.substring(0, result.length() - 2) + "]";
+    }
+
+    public static String integerArrayToString(int[] nums) {
+        return integerArrayToString(nums, nums.length);
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            int n = Integer.parseInt(line);
+            int[] nums = stringToIntegerArray(line);
+            line = in.readLine();
+            int k = Integer.parseInt(line);
 
-            String ret = new Solution().countAndSay(n);
-
-            String out = (ret);
+            new Solution().rotate(nums, k);
+            String out = integerArrayToString(nums);
 
             System.out.print(out);
         }
