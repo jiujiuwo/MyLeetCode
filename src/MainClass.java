@@ -4,21 +4,35 @@ import java.io.InputStreamReader;
 
 
 class Solution {
-    public void rotate(int[] nums, int k) {
-        int n = nums.length;
-        k %= n;
-        reverse(nums,0,n-1);
-        reverse(nums,0,k-1);
-        reverse(nums,k,n-1);
-    }
+    public void moveZeroes(int[] nums) {
+        int tmp =0;
+        int sum =0;
 
-    private void reverse(int[] nums, int left, int right) {
-        while(left<right){
-            int tmp = nums[left];
-            nums[left] = nums[right];
-            nums[right] = tmp;
-            right--;
-            left++;
+        if(nums.length==1){
+            return;
+        }
+
+        //没有考虑nums长度为1的情况
+        for(int i=0;i<nums.length;i++){
+            //如果全为0，不加sum<num.length跳不出循环
+            if(nums[i]==0&&sum<nums.length){
+                //如果nums[i]为0，则计数，并且i后的元素前移
+                sum++;
+                for(int j=i;j<nums.length-1;j++){
+                    nums[j] = nums[j+1];
+                }
+                //为了防止出现移动一位以后，i位置上的数还是0
+                i--;
+            }
+        }
+
+        //将后面的空位补0,若元素全是0.则
+        if(sum<nums.length){
+            for(int i=nums.length-sum;i<nums.length;i++){
+                nums[i] = 0;
+            }
+        }else {
+            return;
         }
     }
 }
@@ -65,7 +79,7 @@ public class MainClass {
             line = in.readLine();
             int k = Integer.parseInt(line);
 
-            new Solution().rotate(nums, k);
+            new Solution().moveZeroes(nums);
             String out = integerArrayToString(nums);
 
             System.out.print(out);

@@ -112,7 +112,99 @@ class Solution {
     }
 }
 ```
-## 正确做法，翻转法
+### 正确做法，翻转法
 ```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+        reverse(nums,0,n-1);
+        reverse(nums,0,k-1);
+        reverse(nums,k,n-1);
+    }
 
+    private void reverse(int[] nums, int left, int right) {
+        while(left<right){
+            int tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            right--;
+            left++;
+        }
+    }
+}
+```
+
+## 存在重复元素
+```
+给定一个整数数组，判断是否存在重复元素。
+
+如果任何值在数组中出现至少两次，函数返回 true。如果数组中每个元素都不相同，则返回 false。
+
+示例 1:
+
+输入: [1,2,3,1]
+输出: true
+示例 2:
+
+输入: [1,2,3,4]
+输出: false
+示例 3:
+
+输入: [1,1,1,3,3,4,3,2,4,2]
+输出: true
+```
+### 使用HashSet做法
+```java
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> numSet = new HashSet<>();
+        for(int i=0;i<nums.length;i++){
+            if(!numSet.contains(nums[i])){
+                numSet.add(nums[i]);
+            }else{
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+```
+## 移动零元素
++ 各种边界条件和特殊情况的考虑
+```java
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int tmp =0;
+        int sum =0;
+
+        if(nums.length==1){
+            return;
+        }
+
+        //没有考虑nums长度为1的情况
+        for(int i=0;i<nums.length;i++){
+            //如果全为0，不加sum<num.length跳不出循环
+            if(nums[i]==0&&sum<nums.length){
+                //如果nums[i]为0，则计数，并且i后的元素前移
+                sum++;
+                for(int j=i;j<nums.length-1;j++){
+                    nums[j] = nums[j+1];
+                }
+                //为了防止出现移动一位以后，i位置上的数还是0
+                i--;
+            }
+        }
+
+        //将后面的空位补0,若元素全是0.则
+        if(sum<nums.length){
+            for(int i=nums.length-sum;i<nums.length;i++){
+                nums[i] = 0;
+            }
+        }else {
+            return;
+        }
+    }
+}
 ```
