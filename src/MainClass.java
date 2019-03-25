@@ -2,41 +2,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 class Solution {
-    public void moveZeroes(int[] nums) {
-        int tmp =0;
-        int sum =0;
+    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
 
-        if(nums.length==1){
-            return;
+        if(pre==null||pre.length==0||in==null||in.length==0){
+            return null;
         }
 
-        //没有考虑nums长度为1的情况
-        for(int i=0;i<nums.length;i++){
-            //如果全为0，不加sum<num.length跳不出循环
-            if(nums[i]==0&&sum<nums.length){
-                //如果nums[i]为0，则计数，并且i后的元素前移
-                sum++;
-                for(int j=i;j<nums.length-1;j++){
-                    nums[j] = nums[j+1];
-                }
-                //为了防止出现移动一位以后，i位置上的数还是0
-                i--;
-            }
-        }
+        TreeNode root = new TreeNode(pre[0]);
 
-        //将后面的空位补0,若元素全是0.则
-        if(sum<nums.length){
-            for(int i=nums.length-sum;i<nums.length;i++){
-                nums[i] = 0;
-            }
-        }else {
-            return;
-        }
+        return null;
     }
 }
-
 public class MainClass {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
@@ -79,10 +56,10 @@ public class MainClass {
             line = in.readLine();
             int k = Integer.parseInt(line);
 
-            new Solution().moveZeroes(nums);
+/*            new Solution().moveZeroes(nums);
             String out = integerArrayToString(nums);
 
-            System.out.print(out);
+            System.out.print(out);*/
         }
     }
 }
