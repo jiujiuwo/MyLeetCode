@@ -3,17 +3,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class Solution {
-    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
-
-        if(pre==null||pre.length==0||in==null||in.length==0){
-            return null;
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null; //前指针节点
+        ListNode curr = head; //当前指针节点
+        //每次循环，都将当前节点指向它前面的节点，然后当前节点和前节点后移
+        while (curr != null) {
+            ListNode nextTemp = curr.next; //临时节点，暂存当前节点的下一节点，用于后移
+            curr.next = prev; //将当前节点指向它前面的节点
+            prev = curr; //前指针后移
+            curr = nextTemp; //当前指针后移
         }
-
-        TreeNode root = new TreeNode(pre[0]);
-
-        return null;
+        return prev;
     }
 }
+
 public class MainClass {
     public static int[] stringToIntegerArray(String input) {
         input = input.trim();
@@ -24,42 +27,42 @@ public class MainClass {
 
         String[] parts = input.split(",");
         int[] output = new int[parts.length];
-        for (int index = 0; index < parts.length; index++) {
+        for(int index = 0; index < parts.length; index++) {
             String part = parts[index].trim();
             output[index] = Integer.parseInt(part);
         }
         return output;
     }
 
-    public static String integerArrayToString(int[] nums, int length) {
-        if (length == 0) {
-            return "[]";
-        }
+    public static ListNode stringToListNode(String input) {
+        // Generate array from the input
+        int[] nodeValues = stringToIntegerArray(input);
 
-        String result = "";
-        for (int index = 0; index < length; index++) {
-            int number = nums[index];
-            result += Integer.toString(number) + ", ";
+        // Now convert that list into linked list
+        ListNode dummyRoot = new ListNode(0);
+        ListNode ptr = dummyRoot;
+        for(int item : nodeValues) {
+            ptr.next = new ListNode(item);
+            ptr = ptr.next;
         }
-        return "[" + result.substring(0, result.length() - 2) + "]";
+        return dummyRoot.next;
     }
 
-    public static String integerArrayToString(int[] nums) {
-        return integerArrayToString(nums, nums.length);
+    public static String booleanToString(boolean input) {
+        return input ? "True" : "False";
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            int[] nums = stringToIntegerArray(line);
-            line = in.readLine();
-            int k = Integer.parseInt(line);
+            ListNode head = stringToListNode(line);
 
-/*            new Solution().moveZeroes(nums);
-            String out = integerArrayToString(nums);
+           // boolean ret = new Solution().isPalindrome(head);
 
-            System.out.print(out);*/
+          //  String out = booleanToString(ret);
+
+           // System.out.print(out);
         }
     }
 }
