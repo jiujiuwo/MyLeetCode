@@ -3,17 +3,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 class Solution {
-    public ListNode reverseList(ListNode head) {
-        ListNode prev = null; //前指针节点
-        ListNode curr = head; //当前指针节点
-        //每次循环，都将当前节点指向它前面的节点，然后当前节点和前节点后移
-        while (curr != null) {
-            ListNode nextTemp = curr.next; //临时节点，暂存当前节点的下一节点，用于后移
-            curr.next = prev; //将当前节点指向它前面的节点
-            prev = curr; //前指针后移
-            curr = nextTemp; //当前指针后移
+    public int maxSubArray(int[] nums) {
+
+        int n = nums.length;
+        int[] sum = new int[n+1];
+        int max = nums[0];
+
+        for(int i=0;i<n;i++){
+            if(i==0){
+                sum[0] = nums[0];
+            }else{
+                sum[i] = sum[i-1]+nums[i];
+            }
         }
-        return prev;
+
+        for(int i=0;i<n;i++){
+            for(int j=i;j<n;j++){
+                max = Math.max(max,sum[j]-sum[i]);
+            }
+        }
+
+        return max;
     }
 }
 

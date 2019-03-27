@@ -1,5 +1,5 @@
 # 数组相关问题
-## 乘积最大子序列
+## 1. 乘积最大子序列
 ```
 Given an integer array nums, find the contiguous subarray within an array (containing at least one number) which has the largest product.
 
@@ -35,7 +35,7 @@ class Solution {
     }
 }
 ```
-### 上面的做法,第三重循环其实多余了，改进如下
+### 2. 上面的做法,第三重循环其实多余了，改进如下
 ```java
 class Solution {
     public int maxProduct(int[] nums) {
@@ -57,7 +57,7 @@ class Solution {
 }
 ```
 
-## 旋转数组
+## 3. 旋转数组
 ```
 给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
 
@@ -135,7 +135,7 @@ class Solution {
 }
 ```
 
-## 存在重复元素
+## 4. 存在重复元素
 ```
 给定一个整数数组，判断是否存在重复元素。
 
@@ -171,7 +171,7 @@ class Solution {
     }
 }
 ```
-## 移动零元素
+## 5. 移动零元素
 + 各种边界条件和特殊情况的考虑
 ```java
 class Solution {
