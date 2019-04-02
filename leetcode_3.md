@@ -373,6 +373,42 @@ class Solution {
 }
 
 ```
+#### 第一种做法违背题意，别人的做法
+```java
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head==null||head.next==null||k<2) return head;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+
+        ListNode prev = dummy;
+        ListNode tail = dummy;
+        ListNode cur;
+        int n;
+        while(true) {
+            n = k;
+            //将tail指针后移k
+            while(n>0 && tail != null) {
+                n--;
+                tail = tail.next;
+            }
+            if(tail == null)
+                break;
+            head = prev.next;
+            while(prev.next != tail) {
+                cur = prev.next;// 保存待处理的节点
+                prev.next = cur.next;// 断开prev与待处理节点的连接
+                cur.next = tail.next;//2步完成头插法 a. 将待处理节点尾部接上tail之后的节点
+                tail.next = cur;//b.tail接上待处理的节点
+            }
+            tail = head;
+            prev = head;
+        }
+        return dummy.next;
+    }
+}
+```
+
 
 ## 26. Remove Duplicates from Sorted Array
 + java,O(n<sup>2</sup>)做法,很慢，不能有其他的空间申请，想不出其他的办法了

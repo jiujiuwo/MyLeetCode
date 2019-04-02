@@ -39,7 +39,52 @@ class Solution {
     }
 }
 ```
-
++ 第二次的写法
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode(l1.val+l2.val);
+        ListNode ptr = head;
+        
+        if(l1.next==null&&l2.next==null){
+            if(ptr.val>=10){
+                ptr.val = ptr.val -10;
+                ptr.next = new ListNode(1);
+            }
+        }
+        
+        while(l1.next!=null||l2.next!=null){
+            
+            if(l1.next!=null){
+                l1 = l1.next;
+            }else{
+                l1.val = 0;
+            }
+            
+            if(l2.next!=null){
+                l2 = l2.next;
+            }else{
+                l2.val = 0;
+            }
+            
+            if(ptr.val>=10){
+                ptr.val = ptr.val -10;
+                ptr.next = new ListNode(l1.val+l2.val+1);
+            }else{
+                ptr.next = new ListNode(l1.val+l2.val);
+            }
+            ptr = ptr.next;
+        }
+        
+        if(ptr.val>=10){
+            ptr.val = ptr.val - 10;
+            ptr.next = new ListNode(1);
+        }
+        
+        return head;
+    }
+}
+```
 #### 3.Longest Substring Without Repeating Characters 2018/11/17  
 + java 超时解,时间复杂度太大，O(N<sup>3</sup>)
 ```java

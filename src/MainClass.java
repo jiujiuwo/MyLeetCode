@@ -1,29 +1,47 @@
+/* -----------------------------------
+ *  WARNING:
+ * -----------------------------------
+ *  Your code may fail to compile
+ *  because it contains public class
+ *  declarations.
+ *  To fix this, please remove the
+ *  "public" keyword from your class
+ *  declarations.
+ */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+import java.util.Stack;
+
 class Solution {
-    public int maxSubArray(int[] nums) {
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
 
-        int n = nums.length;
-        int[] sum = new int[n+1];
-        int max = nums[0];
+    public void push(int node) {
+        stack1.push(node);
+    }
 
-        for(int i=0;i<n;i++){
-            if(i==0){
-                sum[0] = nums[0];
-            }else{
-                sum[i] = sum[i-1]+nums[i];
+    public int pop() {
+        //如果栈2 不为空的话，直接从栈2中取出元素
+        if(!stack2.isEmpty()){
+            return stack2.pop();
+        }else{
+            //若栈2为空，则需要将栈1中的元素push到栈2，然后pop
+            while(!stack1.isEmpty()){
+                stack2.push(stack1.pop());
             }
         }
-
-        for(int i=0;i<n;i++){
-            for(int j=i;j<n;j++){
-                max = Math.max(max,sum[j]-sum[i]);
-            }
-        }
-
-        return max;
+        return stack2.pop();
     }
 }
 
@@ -58,21 +76,32 @@ public class MainClass {
         return dummyRoot.next;
     }
 
-    public static String booleanToString(boolean input) {
-        return input ? "True" : "False";
+    public static String listNodeToString(ListNode node) {
+        if (node == null) {
+            return "[]";
+        }
+
+        String result = "";
+        while (node != null) {
+            result += Integer.toString(node.val) + ", ";
+            node = node.next;
+        }
+        return "[" + result.substring(0, result.length() - 2) + "]";
     }
 
     public static void main(String[] args) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String line;
         while ((line = in.readLine()) != null) {
-            ListNode head = stringToListNode(line);
+            ListNode l1 = stringToListNode(line);
+            line = in.readLine();
+            ListNode l2 = stringToListNode(line);
 
-           // boolean ret = new Solution().isPalindrome(head);
+            ListNode ret = new Solution().addTwoNumbers(l1, l2);
 
-          //  String out = booleanToString(ret);
+            String out = listNodeToString(ret);
 
-           // System.out.print(out);
+            System.out.print(out);
         }
     }
 }
