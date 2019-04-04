@@ -29,6 +29,7 @@ class Solution {
 
     public void push(int node) {
         stack1.push(node);
+
     }
 
     public int pop() {
@@ -97,11 +98,11 @@ public class MainClass {
             line = in.readLine();
             ListNode l2 = stringToListNode(line);
 
-            ListNode ret = new Solution().addTwoNumbers(l1, l2);
+            //ListNode ret = new Solution().addTwoNumbers(l1, l2);
 
-            String out = listNodeToString(ret);
+        //    String out = listNodeToString(ret);
 
-            System.out.print(out);
+            //System.out.print(out);
         }
     }
 }
