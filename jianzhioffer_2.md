@@ -85,3 +85,106 @@ public class Solution {
   }
 }
 ```
+
+# 13. 调整数组顺序使奇数位于偶数前面
++ 题目描述
+```
+输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，
+所有的偶数位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。
+```
+
++ 解法1
+```java
+public class Solution {
+    public void reOrderArray(int [] array) {
+        
+        int count =0;
+        //统计数组中偶数元素的个数，为下面的循环终止提供条件
+        for(int i=0;i<array.length;i++){
+            if(array[i] % 2 == 0){
+                count++;
+            }
+        }
+        
+        int count2 = 0;
+        for(int i=0;i<array.length;i++){
+            if(array[i] % 2 == 0&&count2<count){
+                int tmp = array[i];
+                for(int j=i;j<array.length-1;j++){
+                    array[j] = array[j+1];
+                }
+                array[array.length-1] = tmp;
+                count2++;
+                //将i后的元素前移，并且从当前元素开始重新统计
+                i--;
+            }
+        }
+    }
+}
+```
++ 解法2，书上的解法，不能满足偶数间的相对位置不变
+```java
+public class Solution {
+    public void reOrderArray(int [] array) {
+        int start = 0;
+        int end = array.length -1;
+        
+        while(start < end){
+            while(start<end&&array[start]%2==1){
+                start++;
+            }
+            while(start<end&&array[end]%2==0){
+                end--;
+            }
+            if(start<end){
+                int tmp = array[start];
+                array[start] = array[end];
+                array[end] = tmp;
+            }
+        }
+    }
+}
+```
+
+# 14. 链表中倒数第k个结点
++ 题目描述
+```
+输入一个链表，输出该链表中倒数第k个结点。
+```
++ 解法1，注意边界条件
+```java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode FindKthToTail(ListNode head,int k) {
+        //注意head是否为空
+        if(head==null){
+            return null;
+        }
+        ListNode ptr = head;
+        int count = 0;
+        while(ptr != null){
+            count++;
+            ptr = ptr.next;
+        }
+        
+        //注意k是否小于结点总数
+        if(k>count){
+            return null;
+        }else{
+            ptr = head;
+            for(int i=0;i<count-k;i++){
+                ptr = ptr.next;
+            }
+        }
+        return ptr;
+    }
+}
+```
