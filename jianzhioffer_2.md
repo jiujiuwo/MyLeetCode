@@ -188,3 +188,50 @@ public class Solution {
     }
 }
 ```
+
+# 15. 合并两个排序的链表
++ 题目描述
+```
+输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+```
++ 解法1
+````java
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode Merge(ListNode list1,ListNode list2) {
+        ListNode head = new ListNode(0);
+        ListNode ptr = head;
+        while(list1!=null||list2!=null){
+            if(list1!=null&&list2!=null){
+                if(list1.val>list2.val){
+                    //取了某一个链表的值，将该链表的指针后移
+                    ptr.next = new ListNode(list2.val);
+                    ptr = ptr.next;
+                    list2 = list2.next;
+                }else{
+                    ptr.next = new ListNode(list1.val);
+                    ptr = ptr.next;
+                    list1 = list1.next;
+                }
+            }else if(list1!=null&&list2==null){
+                ptr.next = new ListNode(list1.val);
+                ptr = ptr.next;
+                list1 = list1.next;
+            }else if(list1==null&&list2!=null){
+                ptr.next = new ListNode(list2.val);
+                ptr = ptr.next;
+                list2 = list2.next;
+            }
+        }
+        return head.next;
+    }
+}
+````
