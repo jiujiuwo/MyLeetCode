@@ -235,3 +235,107 @@ public class Solution {
     }
 }
 ````
+
+# 16. 树的子结构
++ 题目描述
+```
+输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+```
++ 解法1,递归
+```java
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+        boolean result = false;
+        if(root1!=null && root2!=null){
+            //在树1中查找与树2根节点的值一样的节点，实际上是树的遍历
+            if(root1.val == root2.val){
+                result = doesTree1HaveTree2(root1,root2);
+            }
+            if(!result){
+                result = HasSubtree(root1.left,root2);
+            }
+            if(!result){
+                 result = HasSubtree(root1.right,root2);
+            }
+        }
+        return result;
+    }
+    
+    //判断树1从根节点开始，是否包含树2
+    private boolean doesTree1HaveTree2(TreeNode root1,TreeNode root2){
+        if(root2==null){
+            return true;
+        }
+        if(root1==null){
+            return false;
+        }
+        if(root1.val != root2.val){
+            return false;
+        }
+        return doesTree1HaveTree2(root1.left,root2.left) && doesTree1HaveTree2(root1.right,root2.right);
+    }
+    
+}
+```
+
+# 17. 二叉树的镜像
++ 题目描述
+```
+操作给定的二叉树，将其变换为源二叉树的镜像。
+输入描述:
+二叉树的镜像定义：源二叉树 
+    	    8
+    	   /  \
+    	  6   10
+    	 / \  / \
+    	5  7 9 11
+    	镜像二叉树
+    	    8
+    	   /  \
+    	  10   6
+    	 / \  / \
+    	11 9 7  5
+```
++ 解法1 ，递归
+```java
+/**
+public class TreeNode {
+    int val = 0;
+    TreeNode left = null;
+    TreeNode right = null;
+
+    public TreeNode(int val) {
+        this.val = val;
+
+    }
+
+}
+*/
+public class Solution {
+    public void Mirror(TreeNode root) {
+        
+        if(root == null){
+            return;
+        }
+        TreeNode tmp = null;
+        tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+        Mirror(root.left);
+        Mirror(root.right);
+    }
+}
+```
