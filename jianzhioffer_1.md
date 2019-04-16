@@ -206,7 +206,7 @@ public class Solution {
             return 1;
         }
         
-        int result = 0+1;
+        int result = 0;
         //存储f(n-1)的值
         int fibMinusOne = 1;
         //存储f(n-2)的值

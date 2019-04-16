@@ -189,7 +189,68 @@ public class Solution {
 }
 ```
 
-# 15. 合并两个排序的链表
+# 15. 反转链表
+
++ java解法,自己写的错误答案
+```java
+public class Solution{
+    public ListNode reverse(ListNode head){
+        if(head==null){
+            return head;
+        }
+        ListNode pre = head;
+        head.next = null;//这句不对，必须第一个元素的next置为null,但是还不能断开后面的链接
+        ListNode tmp = head.next;
+        while(ptr!=null){
+            ListNode next = ptr.next;
+            ptr.next = pre;
+            pre = ptr;
+            ptr = next;
+        }
+        return pre;
+    }
+}
+```
++ 更改后的答案
+```java
+public class Solution{
+    public ListNode reverse(ListNode head){
+        if(head==null){
+            return head;
+        }
+        ListNode pre = head;
+        ListNode tmp = head.next;
+        head.next = null;
+        ListNode ptr = tmp;
+        //上面的代码先交换第1和第2个元素，并将第一个元素的next置为null
+        while(ptr!=null){
+            ListNode next = ptr.next;
+            ptr.next = pre;
+            pre = ptr;
+            ptr = next;
+        }
+        return pre;
+    }
+}
+```
++ 最佳答案
+```java
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode ptr = head;
+        ListNode next = null;
+        while(ptr!=null){
+            next = ptr.next;
+            ptr.next = pre;
+            pre = ptr;
+            ptr = next;
+        }
+        return pre;
+    }
+}
+```
+# 16. 合并两个排序的链表
 + 题目描述
 ```
 输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
@@ -236,7 +297,7 @@ public class Solution {
 }
 ````
 
-# 16. 树的子结构
+# 17. 树的子结构
 + 题目描述
 ```
 输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
@@ -291,7 +352,7 @@ public class Solution {
 }
 ```
 
-# 17. 二叉树的镜像
+# 18. 二叉树的镜像
 + 题目描述
 ```
 操作给定的二叉树，将其变换为源二叉树的镜像。
@@ -338,4 +399,130 @@ public class Solution {
         Mirror(root.right);
     }
 }
+```
+# 19. 顺时针打印矩阵
++ 题目描述
+```
+输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，例如，
+如果输入如下4 X 4矩阵： 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 
+则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+```
++ 解法1
+```java
+import java.util.ArrayList;
+public class Solution {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        if(matrix == null){
+            return null;
+        }
+        ArrayList<Integer> list = new ArrayList();
+        int rows = matrix.length;
+        int columns = matrix[0].length;
+        //一次循环的四个边界
+        int left = 0,right = columns-1,top = 0,bottom = rows -1;
+        while(left<=right && top<=bottom){
+            //从左到右
+            for(int i = left;i<=right;i++){
+                list.add(matrix[top][i]);
+            }
+            //从上到下
+            for(int j=top+1;j<=bottom;j++){
+                list.add(matrix[j][right]);
+            }
+            //从右到左
+            if(top!=bottom){
+                for(int k = right-1;k>=left;k--){
+                    list.add(matrix[bottom][k]);
+                }
+            }
+            //从下到上
+            if(left!=right){
+                for(int l=bottom-1;l>top;l--){
+                    list.add(matrix[l][left]);
+                }
+            }
+            //缩小边界
+            top++;
+            left++;
+            right--;
+            bottom--;
+        }
+        
+        return list;
+    }
+}
+```
+
+# 20. 包含min函数的栈
++ 题目描述
+定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数
+（时间复杂度应为O（1））。
++ 解法1，使用两个栈来实现
+```java
+import java.util.Stack;
+
+public class Solution {
+
+    Stack<Integer> stack1 = new Stack<>();
+    Stack<Integer> stack2 = new Stack<>();
+    /*
+        使用两个栈来保存元素，栈2只保存最小的元素，若入栈元素大
+        于栈2顶的元素，则栈2压入自己的栈顶元素
+     */
+    public void push(int tmp){
+        stack1.push(tmp);
+        if(stack2.isEmpty()||stack2.peek()>tmp){
+            stack2.push(tmp);
+        }else{
+            stack2.push(stack2.peek());
+        }
+    }
+
+    public void pop(){
+        stack1.pop();
+        stack2.pop();
+    }
+
+    public int min(){
+        return stack2.peek();
+    }
+}
+
+```
++ 解法2，使用一个栈实现，时间复杂度O(N),
++ 实际运行速度快于解法1，2ms
+```java
+import java.util.Iterator;
+import java.util.Stack;
+
+public class Solution {
+
+    Stack<Integer> stack1 = new Stack<>();
+    Stack<Integer> stack2 = new Stack<>();
+    /*
+        使用两个栈来保存元素，栈2只保存最小的元素，若入栈元素大
+        于栈2顶的元素，则栈2压入自己的栈顶元素
+     */
+    public void push(int tmp){
+        stack1.push(tmp);
+    }
+
+    public void pop(){
+        stack1.pop();
+    }
+
+    public int min(){
+        //这里注意，min的初值应该为stack1中的元素，不能设为0
+        int min = stack1.peek();
+        Iterator iterator = stack1.iterator();
+        while (iterator.hasNext()){
+            int tmp = (Integer) iterator.next();
+            if(min > tmp){
+                min = tmp;
+            }
+        }
+        return min;
+    }
+}
+
 ```
