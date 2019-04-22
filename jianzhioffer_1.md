@@ -309,3 +309,30 @@ public class Solution {
     }
 }
 ```
+
+# 快速排序
+```c++
+void quickSort(int[] array,int low,int high){
+	if(low < high){
+		int p = partition(array,low,high);
+		quickSort(array,low,p-1);
+		quickSort(array,p+1,high);
+	}
+}
+
+int partition(int[] array,int low,int high){
+	int p = array[low];
+	while(low < high){
+		while(low<high&&array[high]>=p){
+			high--;
+		}
+		array[low] = array[high];
+		while(low<high&&array[low]<=p){
+			low++;
+		}
+		array[high] = array[low];
+	}
+	array[low] = p;
+	return low;
+}
+```
