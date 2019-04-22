@@ -1,24 +1,12 @@
 import java.util.ArrayList;
+import java.util.List;
 
 class MainClass {
-    enum DIRECTION{UP,DOWN,LEFT,RIGHT};
-    public ArrayList<Integer> printMatrix(int [][] matrix) {
-        ArrayList resultList = new ArrayList<>();
-        if(matrix==null){
-            return resultList;
-        }
-
-        int lines = matrix.length;
-        int columns = matrix[0].length;
-        DIRECTION now = DIRECTION.UP;
-
-        for(int i=0;i<lines;i++){
-            for(int j=0;j<columns;j++){
-
-            }
-        }
-
-
-        return null;
+    public static void main(String[] args){
+        RandomListNode randomListNode = new RandomListNode(1);
+        List<RandomListNode> test = new ArrayList<>();
+        test.add(randomListNode);
+        System.out.println(randomListNode==test.get(0));//true
+        System.out.println(randomListNode.equals(test.get(0)));//true
     }
 }

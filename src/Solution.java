@@ -1,38 +1,36 @@
-import java.util.ArrayList;
-/**
- public class TreeNode {
- int val = 0;
- TreeNode left = null;
- TreeNode right = null;
+import java.util.Stack;
 
- public TreeNode(int val) {
- this.val = val;
-
- }
-
- }
- */
-public class Solution {
-    public ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
-        if(root==null){
+public class Solution{
+    /*
+     解法1，非递归的中序遍历
+     修改当前结点与前一遍历结点的指针指向
+     */
+    public TreeNode Convert(TreeNode pRootOfTree){
+        if(pRootOfTree==null){
             return null;
         }
-        ArrayList<Integer> result = new ArrayList<>();
-        ArrayList<TreeNode> nodes = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode ptr = pRootOfTree;
+        TreeNode pre = null;//保存中序遍历序列的上一结点
+        boolean isFirst = true;
 
-        nodes.add(root);
-        while (result.size()!=nodes.size()){
-            for(int i=0;i<nodes.size();i++){
-                TreeNode tmp = nodes.get(i);
-                result.add(tmp.val);
-                if(tmp.left!=null){
-                    nodes.add(tmp.left);
-                }
-                if(tmp.right!=null){
-                    nodes.add(tmp.right);
-                }
+        while(ptr!=null||!stack.isEmpty()){
+            while (ptr!=null){
+                stack.push(ptr);
+                ptr = ptr.left;
             }
+            ptr = stack.pop();
+            if(isFirst){
+                pRootOfTree = ptr;
+                pre = pRootOfTree;
+                isFirst = false;
+            }else{
+                pre.right = ptr;
+                ptr.left = pre;
+                pre = ptr;
+            }
+            ptr = ptr.right;
         }
-        return result;
+        return pRootOfTree;
     }
 }
