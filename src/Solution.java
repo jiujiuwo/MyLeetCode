@@ -1,36 +1,21 @@
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Solution{
-    /*
-     解法1，非递归的中序遍历
-     修改当前结点与前一遍历结点的指针指向
-     */
-    public TreeNode Convert(TreeNode pRootOfTree){
-        if(pRootOfTree==null){
-            return null;
-        }
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode ptr = pRootOfTree;
-        TreeNode pre = null;//保存中序遍历序列的上一结点
-        boolean isFirst = true;
+public class Solution {
+    public boolean IsBalanced_Solution(TreeNode root) {
+        List<TreeNode> tmp = new ArrayList<>();
+        tmp.add(root);
+        for(int i=0;i<tmp.size();i++){
+            int deep = 0;
 
-        while(ptr!=null||!stack.isEmpty()){
-            while (ptr!=null){
-                stack.push(ptr);
-                ptr = ptr.left;
+            if(root.left!=null){
+                tmp.add(root.left);
             }
-            ptr = stack.pop();
-            if(isFirst){
-                pRootOfTree = ptr;
-                pre = pRootOfTree;
-                isFirst = false;
-            }else{
-                pre.right = ptr;
-                ptr.left = pre;
-                pre = ptr;
+            if(root.right!=null){
+                tmp.add(root.right);
             }
-            ptr = ptr.right;
+            deep++;
         }
-        return pRootOfTree;
+        return true;
     }
 }
