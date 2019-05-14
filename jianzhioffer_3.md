@@ -427,7 +427,92 @@ class MainClass {
 ```
 
 # 26. 二叉搜索树与双向链表
++ 题目描述
+```
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+要求不能创建任何新的节点，只能调整树中结点指针的指向
+```
++ 解法1,使用非递归中序遍历
+```java
+import java.util.Stack;
 
+public class Solution{
+    /*
+     解法1，非递归的中序遍历
+     修改当前结点与前一遍历结点的指针指向
+     */
+    public TreeNode Convert(TreeNode pRootOfTree){
+        if(pRootOfTree==null){
+            return null;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode ptr = pRootOfTree;
+        TreeNode pre = null;//保存中序遍历序列的上一结点
+        boolean isFirst = true;
 
-
+        while(ptr!=null||!stack.isEmpty()){
+            while (ptr!=null){
+                stack.push(ptr);
+                ptr = ptr.left;
+            }
+            ptr = stack.pop();
+            if(isFirst){
+                pRootOfTree = ptr;//将中序遍历序列中的第一个节点记为root
+                pre = pRootOfTree;
+                isFirst = false;
+            }else{
+                pre.right = ptr;    //上一个节点的右子树链接到当前结点
+                ptr.left = pre;     //当前结点的左链连接到上一个节点
+                pre = ptr;          //pre当前结点
+            }
+            ptr = ptr.right;
+        }
+        return pRootOfTree;
+    }
+}
+```
++ 解法2，递归方法
+    + 1.将左子树构造成双链表，并返回链表头节点。
+    + 2.定位至左子树双链表最后一个节点。
+    + 3.如果左子树链表不为空的话，将当前root追加到左子树链表。
+    + 4.将右子树构造成双链表，并返回链表头节点。
+    + 5.如果右子树链表不为空的话，将该链表追加到root节点之后。
+    + 6.根据左子树链表是否为空确定返回的节点。
+```java
+public class Solution{
+    public TreeNode Convert(TreeNode root) {
+        if(root==null)
+            return null;
+        if(root.left==null&&root.right==null)
+            return root;
+        // 1.将左子树构造成双链表，并返回链表头节点
+        TreeNode left = Convert(root.left);
+        TreeNode p = left;
+        // 2.定位至左子树双链表最后一个节点
+        while(p!=null&&p.right!=null){
+            p = p.right;
+        }
+        // 3.如果左子树链表不为空的话，将当前root追加到左子树链表
+        if(left!=null){
+            p.right = root;
+            root.left = p;
+        }
+        // 4.将右子树构造成双链表，并返回链表头节点
+        TreeNode right = Convert(root.right);
+        // 5.如果右子树链表不为空的话，将该链表追加到root节点之后
+        if(right!=null){
+            right.left = root;
+            root.right = right;
+        }
+        return left!=null?left:root;       
+    }
+}
+```
 # 27. 字符串的排列
++ 题目描述
+```
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+输入描述:
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+```
++ 
