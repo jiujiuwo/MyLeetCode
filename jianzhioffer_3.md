@@ -515,4 +515,143 @@ public class Solution{
 输入描述:
 输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
 ```
-+ 
++ 解法1，有重复的结果，不通过(通过率30%)
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+
+        ArrayList<String> result = new ArrayList<>();
+        Set<String> resultSet = new LinkedHashSet<>();
+
+        if(str==null||str.isEmpty()|str.length()==0){
+            return result;
+        }
+
+        if(str.length()==1){
+            result.add(str);
+            return result;
+        }
+
+        char[] charArray = str.toCharArray();
+
+        Arrays.sort(charArray);
+
+        buildResult(resultSet,"",charArray,0,charArray.length);
+
+        result.addAll(resultSet);
+
+        return result;
+    }
+
+    private void buildResult(Set<String> result,String tmp,char[] charArray, int index, int length) {
+
+        if(tmp.length()==length){
+            result.add(tmp);
+        }else{
+            for(int i=0;i<length;i++){
+                if(index!=0){
+                    if(i!=index){
+                        buildResult(result,tmp+charArray[i],charArray,index+1,length);
+                    }
+                }else{
+                    buildResult(result,tmp+charArray[i],charArray,index+1,length);
+                }
+            }
+        }
+    }
+}
+```
++ 解法2,正解
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+public class Solution
+{
+    public ArrayList<String> Permutation(String str)
+    {
+        ArrayList<String> res=new ArrayList<String>();
+        if(str.length()==0||str==null)return res;
+        int n= str.length();
+        helper(res,0,str.toCharArray());
+        Collections.sort(res);
+        return res;
+         
+    }
+    public void helper( ArrayList<String> res,int index,char []s)
+    {
+        if(index==s.length-1)res.add(new String(s));
+        for(int i=index;i<s.length;i++)
+        {
+            if(i==index||s[index]!=s[i])
+            {
+                swap(s,index,i);
+                helper(res,index+1,s);
+                swap(s,index,i);
+            }
+        }
+         
+    }
+     
+    public void swap(char[]t,int i,int j)
+     {
+        char c=t[i];
+        t[i]=t[j];
+        t[j]=c;
+    }
+}
+```
++ 解法3
+```java
+import java.util.*;
+ 
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+ 
+        ArrayList<String> result = new ArrayList<>();
+ 
+        if(str==null||str.isEmpty()|str.length()==0){
+            return result;
+        }
+ 
+        char[] charArray = str.toCharArray();
+        TreeSet<String> temp = new TreeSet();
+ 
+        Permutation(charArray,0,temp);
+        result.addAll(temp);
+        return result;
+    }
+ 
+    private void Permutation(char[] charArray,int begin,TreeSet result) {
+        if(charArray==null||charArray.length==0||begin<0||begin>charArray.length-1){
+            return;
+        }
+ 
+        if(begin==charArray.length-1){
+            result.add(String.valueOf(charArray));
+        }else{
+            for(int i=begin;i<=charArray.length-1;i++){
+                swap(charArray,begin,i);
+                Permutation(charArray,begin+1,result);
+                swap(charArray,begin,i);
+            }
+        }
+ 
+    }
+ 
+    private void swap(char[] charArray, int a, int b) {
+        char t = charArray[a];
+        charArray[a] = charArray[b];
+        charArray[b] = t;
+    }
+}
+```
+# 28. 数组中出现次数超过一半的数字
+
+# 29. 最小的K个数
+
+# 30. 连续子数组的最大和
