@@ -509,6 +509,7 @@ public class Solution{
 }
 ```
 # 27. 字符串的排列
+#### 遗留问题，见？？？处
 + 题目描述
 ```
 输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
@@ -589,6 +590,7 @@ public class Solution
         {
             if(i==index||s[index]!=s[i])
             {
+                //为什么这里要有连个swap???
                 swap(s,index,i);
                 helper(res,index+1,s);
                 swap(s,index,i);
@@ -650,8 +652,92 @@ public class Solution {
     }
 }
 ```
-# 28. 数组中出现次数超过一半的数字
+![1](https://note.youdao.com/yws/api/personal/file/D9EDE7094E1848F3A92FB23BCDC6AFBB?method=download&shareKey=f08c61375d4ca969fcca03ad93611e62)
 
+# 28. 数组中出现次数超过一半的数字
++ 题目描述
+```
+数组中有一个数字出现的次数超过数组长度的一半，
+请找出这个数字。例如输入一个长度为9的数组
+{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，
+超过数组长度的一半，因此输出2。如果不存在则输出0。
+```
++ 解法1，map法，19ms
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        int result = 0;
+
+        if(array==null||array.length==0){
+            return result;
+        }
+
+        Map<Integer,Integer> countMap = new HashMap<>();
+
+        for(int i=0;i<array.length;i++){
+            if(countMap.containsKey(array[i])){
+                countMap.put(array[i],countMap.get(array[i])+1);
+            }else{
+                countMap.put(array[i],1);
+            }
+        }
+
+        for(int item : countMap.keySet()){
+            if(countMap.get(item)>array.length/2){
+                result = item;
+            }
+        }
+
+        return result;
+    }
+}
+```
+
++ 解法2,19ms,另一种计数方法，书中推荐做法
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        int result = 0;
+
+        if(array==null||array.length==0){
+            return result;
+        }
+
+        result = array[0];
+        int count = 0;
+
+        for(int i=0;i<array.length;i++){
+            if(array[i]==result){
+                count++;
+            }else{
+                count--;
+                if(count<=0){
+                    result = array[i];
+                    count=1;
+                }
+            }
+        }
+        count=0;
+        for(int i=0;i<array.length;i++){
+            if(array[i]==result){
+                count++;
+            }
+        }
+
+        if(count<=array.length/2){
+            result = 0;
+        }
+
+        return result;
+    }
+}
+```
 # 29. 最小的K个数
 
 # 30. 连续子数组的最大和
