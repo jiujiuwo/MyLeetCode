@@ -425,3 +425,377 @@ class MainClass {
     }
 }
 ```
+
+# 26. 二叉搜索树与双向链表
++ 题目描述
+```
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+要求不能创建任何新的节点，只能调整树中结点指针的指向
+```
++ 解法1,使用非递归中序遍历
+```java
+import java.util.Stack;
+
+public class Solution{
+    /*
+     解法1，非递归的中序遍历
+     修改当前结点与前一遍历结点的指针指向
+     */
+    public TreeNode Convert(TreeNode pRootOfTree){
+        if(pRootOfTree==null){
+            return null;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode ptr = pRootOfTree;
+        TreeNode pre = null;//保存中序遍历序列的上一结点
+        boolean isFirst = true;
+
+        while(ptr!=null||!stack.isEmpty()){
+            while (ptr!=null){
+                stack.push(ptr);
+                ptr = ptr.left;
+            }
+            ptr = stack.pop();
+            if(isFirst){
+                pRootOfTree = ptr;//将中序遍历序列中的第一个节点记为root
+                pre = pRootOfTree;
+                isFirst = false;
+            }else{
+                pre.right = ptr;    //上一个节点的右子树链接到当前结点
+                ptr.left = pre;     //当前结点的左链连接到上一个节点
+                pre = ptr;          //pre当前结点
+            }
+            ptr = ptr.right;
+        }
+        return pRootOfTree;
+    }
+}
+```
++ 解法2，递归方法
+    + 1.将左子树构造成双链表，并返回链表头节点。
+    + 2.定位至左子树双链表最后一个节点。
+    + 3.如果左子树链表不为空的话，将当前root追加到左子树链表。
+    + 4.将右子树构造成双链表，并返回链表头节点。
+    + 5.如果右子树链表不为空的话，将该链表追加到root节点之后。
+    + 6.根据左子树链表是否为空确定返回的节点。
+```java
+public class Solution{
+    public TreeNode Convert(TreeNode root) {
+        if(root==null)
+            return null;
+        if(root.left==null&&root.right==null)
+            return root;
+        // 1.将左子树构造成双链表，并返回链表头节点
+        TreeNode left = Convert(root.left);
+        TreeNode p = left;
+        // 2.定位至左子树双链表最后一个节点
+        while(p!=null&&p.right!=null){
+            p = p.right;
+        }
+        // 3.如果左子树链表不为空的话，将当前root追加到左子树链表
+        if(left!=null){
+            p.right = root;
+            root.left = p;
+        }
+        // 4.将右子树构造成双链表，并返回链表头节点
+        TreeNode right = Convert(root.right);
+        // 5.如果右子树链表不为空的话，将该链表追加到root节点之后
+        if(right!=null){
+            right.left = root;
+            root.right = right;
+        }
+        return left!=null?left:root;       
+    }
+}
+```
+# 27. 字符串的排列
+#### 遗留问题，见？？？处
++ 题目描述
+```
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+输入描述:
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+```
++ 解法1，有重复的结果，不通过(通过率30%)
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+
+        ArrayList<String> result = new ArrayList<>();
+        Set<String> resultSet = new LinkedHashSet<>();
+
+        if(str==null||str.isEmpty()|str.length()==0){
+            return result;
+        }
+
+        if(str.length()==1){
+            result.add(str);
+            return result;
+        }
+
+        char[] charArray = str.toCharArray();
+
+        Arrays.sort(charArray);
+
+        buildResult(resultSet,"",charArray,0,charArray.length);
+
+        result.addAll(resultSet);
+
+        return result;
+    }
+
+    private void buildResult(Set<String> result,String tmp,char[] charArray, int index, int length) {
+
+        if(tmp.length()==length){
+            result.add(tmp);
+        }else{
+            for(int i=0;i<length;i++){
+                if(index!=0){
+                    if(i!=index){
+                        buildResult(result,tmp+charArray[i],charArray,index+1,length);
+                    }
+                }else{
+                    buildResult(result,tmp+charArray[i],charArray,index+1,length);
+                }
+            }
+        }
+    }
+}
+```
++ 解法2,正解
+```java
+import java.util.ArrayList;
+import java.util.Collections;
+public class Solution
+{
+    public ArrayList<String> Permutation(String str)
+    {
+        ArrayList<String> res=new ArrayList<String>();
+        if(str.length()==0||str==null)return res;
+        int n= str.length();
+        helper(res,0,str.toCharArray());
+        Collections.sort(res);
+        return res;
+         
+    }
+    public void helper( ArrayList<String> res,int index,char []s)
+    {
+        if(index==s.length-1)res.add(new String(s));
+        for(int i=index;i<s.length;i++)
+        {
+            if(i==index||s[index]!=s[i])
+            {
+                //为什么这里要有连个swap???
+                swap(s,index,i);
+                helper(res,index+1,s);
+                swap(s,index,i);
+            }
+        }
+         
+    }
+     
+    public void swap(char[]t,int i,int j)
+     {
+        char c=t[i];
+        t[i]=t[j];
+        t[j]=c;
+    }
+}
+```
++ 解法3
+```java
+import java.util.*;
+ 
+public class Solution {
+    public ArrayList<String> Permutation(String str) {
+ 
+        ArrayList<String> result = new ArrayList<>();
+ 
+        if(str==null||str.isEmpty()|str.length()==0){
+            return result;
+        }
+ 
+        char[] charArray = str.toCharArray();
+        TreeSet<String> temp = new TreeSet();
+ 
+        Permutation(charArray,0,temp);
+        result.addAll(temp);
+        return result;
+    }
+ 
+    private void Permutation(char[] charArray,int begin,TreeSet result) {
+        if(charArray==null||charArray.length==0||begin<0||begin>charArray.length-1){
+            return;
+        }
+ 
+        if(begin==charArray.length-1){
+            result.add(String.valueOf(charArray));
+        }else{
+            for(int i=begin;i<=charArray.length-1;i++){
+                swap(charArray,begin,i);
+                Permutation(charArray,begin+1,result);
+                swap(charArray,begin,i);
+            }
+        }
+ 
+    }
+ 
+    private void swap(char[] charArray, int a, int b) {
+        char t = charArray[a];
+        charArray[a] = charArray[b];
+        charArray[b] = t;
+    }
+}
+```
+![1](https://note.youdao.com/yws/api/personal/file/D9EDE7094E1848F3A92FB23BCDC6AFBB?method=download&shareKey=f08c61375d4ca969fcca03ad93611e62)
+
+# 28. 数组中出现次数超过一半的数字
++ 题目描述
+```
+数组中有一个数字出现的次数超过数组长度的一半，
+请找出这个数字。例如输入一个长度为9的数组
+{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，
+超过数组长度的一半，因此输出2。如果不存在则输出0。
+```
++ 解法1，map法，19ms
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        int result = 0;
+
+        if(array==null||array.length==0){
+            return result;
+        }
+
+        Map<Integer,Integer> countMap = new HashMap<>();
+
+        for(int i=0;i<array.length;i++){
+            if(countMap.containsKey(array[i])){
+                countMap.put(array[i],countMap.get(array[i])+1);
+            }else{
+                countMap.put(array[i],1);
+            }
+        }
+
+        for(int item : countMap.keySet()){
+            if(countMap.get(item)>array.length/2){
+                result = item;
+            }
+        }
+
+        return result;
+    }
+}
+```
+
++ 解法2,19ms,另一种计数方法，书中推荐做法
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class Solution {
+    public int MoreThanHalfNum_Solution(int [] array) {
+        int result = 0;
+
+        if(array==null||array.length==0){
+            return result;
+        }
+
+        result = array[0];
+        int count = 0;
+
+        for(int i=0;i<array.length;i++){
+            if(array[i]==result){
+                count++;
+            }else{
+                count--;
+                if(count<=0){
+                    result = array[i];
+                    count=1;
+                }
+            }
+        }
+        count=0;
+        for(int i=0;i<array.length;i++){
+            if(array[i]==result){
+                count++;
+            }
+        }
+
+        if(count<=array.length/2){
+            result = 0;
+        }
+
+        return result;
+    }
+}
+```
+# 29. 最小的K个数
++ 题目描述
+```
+输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+```
++ 解法1 ，使用快速排序
+```java
+import java.util.ArrayList;
+
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> result = new ArrayList<>();
+
+        //如果k > 输入数组的长度。返回所有元素还是返回空？
+        if(k>input.length){
+            return result;
+        }
+
+        quickSort(input,0,input.length-1);
+
+        for(int i=0;i<k;i++){
+            result.add(input[i]);
+        }
+
+        return result;
+    }
+
+    //快速排序
+    static void quickSort(int[] input,int left,int right){
+        if(left>=right){
+            return;
+        }
+
+        int p = input[left];
+
+        int i = left;
+        int j = right;
+
+        while (i<j){
+            while(input[j]>=p&&i<j){
+                j--;
+            }
+            while(input[i]<=p&&i<j){
+                i++;
+            }
+
+            if(i<j){
+                int tmp = input[i];
+                input[i] = input[j];
+                input[j] = tmp;
+            }
+        }
+
+        input[left] = input[i];
+        input[i] = p;
+        quickSort(input,left,i-1);
+        quickSort(input,i+1,right);
+    }
+}
+```
+# 30. 连续子数组的最大和

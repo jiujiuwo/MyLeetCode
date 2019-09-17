@@ -1,36 +1,52 @@
-import java.util.Stack;
+import java.util.ArrayList;
 
-public class Solution{
-    /*
-     解法1，非递归的中序遍历
-     修改当前结点与前一遍历结点的指针指向
-     */
-    public TreeNode Convert(TreeNode pRootOfTree){
-        if(pRootOfTree==null){
-            return null;
-        }
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode ptr = pRootOfTree;
-        TreeNode pre = null;//保存中序遍历序列的上一结点
-        boolean isFirst = true;
+public class Solution {
+    public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) {
+        ArrayList<Integer> result = new ArrayList<>();
 
-        while(ptr!=null||!stack.isEmpty()){
-            while (ptr!=null){
-                stack.push(ptr);
-                ptr = ptr.left;
-            }
-            ptr = stack.pop();
-            if(isFirst){
-                pRootOfTree = ptr;
-                pre = pRootOfTree;
-                isFirst = false;
-            }else{
-                pre.right = ptr;
-                ptr.left = pre;
-                pre = ptr;
-            }
-            ptr = ptr.right;
+        //如果k > 输入数组的长度。返回所有元素还是返回空？
+        if(k>input.length){
+            return result;
         }
-        return pRootOfTree;
+
+        quickSort(input,0,input.length-1);
+
+        for(int i=0;i<k;i++){
+            result.add(input[i]);
+        }
+
+        return result;
+    }
+
+    //快速排序
+    static void quickSort(int[] input,int left,int right){
+        if(left>=right){
+            return;
+        }
+
+        int p = input[left];
+
+        int i = left;
+        int j = right;
+
+        while (i<j){
+            while(input[j]>=p&&i<j){
+                j--;
+            }
+            while(input[i]<=p&&i<j){
+                i++;
+            }
+
+            if(i<j){
+                int tmp = input[i];
+                input[i] = input[j];
+                input[j] = tmp;
+            }
+        }
+
+        input[left] = input[i];
+        input[i] = p;
+        quickSort(input,left,i-1);
+        quickSort(input,i+1,right);
     }
 }
