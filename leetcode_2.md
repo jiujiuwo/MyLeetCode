@@ -53,6 +53,9 @@ class Solution {
 ```
 + java O(n)解法
 + beat 3.89%
++
+> 两个指针相互靠近时，矩形的底是变小的，所以只有高变大才有可能面积变大，SO，
+让短的那个边向中间靠近
 ```java
 class Solution {
     //O(n)的解法，因为左右取两者小后是对称的，所以，没有必要二重循环，
@@ -534,6 +537,7 @@ func threeSum(nums []int) [][]int {
 
 + 别人的解法，java,据说是O(N<sup>2</sup>)
 + Runtime: 71 ms, faster than 40.69% of Java online submissions for 3Sum.
++ 双指针做法
 ```java
 
 import java.util.Arrays;

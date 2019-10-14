@@ -1,6 +1,50 @@
 ## LeetCode刷题记录
+# 1. 两数之和
++ 题目描述
+```
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
 
-#### 2.add two numbers  2018/11/13  
+示例:
+给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+```
+#### 解法
++ 暴力解法
+
++ hashmap
+```java
+import java.util.HashMap;
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer,Integer> map = new HashMap();
+        for(int i=0;i<nums.length;i++){
+            if(map.containsKey(target-nums[i])){
+                return new int[]{i,map.get(target-nums[i])};
+            }else{
+                map.put(nums[i],i);
+            }
+        }
+        return nums;
+    }
+}
+```
+
+### 相关题目
+```
+15. 三数之和
+18. 四数之和
+167. 两数之和 II - 输入有序数组
+两数之和 III - 数据结构设计
+和为K的子数组
+两数之和 IV - 输入 BST
+小于 K 的两数之和
+```
+
+
+# 2.add two numbers  2018/11/13  
 + java解法，难点在 l1,l2 有没有下一个值的判断
 ```java
 class Solution {
@@ -85,7 +129,7 @@ class Solution {
     }
 }
 ```
-#### 3.Longest Substring Without Repeating Characters 2018/11/17  
+# 3.Longest Substring Without Repeating Characters 2018/11/17  
 + java 超时解,时间复杂度太大，O(N<sup>3</sup>)
 ```java
 class Solution {
@@ -182,8 +226,30 @@ class Solution {
     }
 }
 ```
++ java解法，利用数组,双指针（滑动窗口）
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int left = 0,right = -1;
+        int freq[] = new int[256];
+        int result = 0;
+        char[] charArray = s.toCharArray();
+        while(left<s.length()){
+            if(right+1<s.length()&&freq[charArray[right+1]]==0){
+                right++;
+                freq[charArray[right]]++;
+            }else{
+                freq[charArray[left]]--;
+                left++;
+            }
+            result = Math.max(result,right-left+1);
+        }
+        return result;
+    }
+}
+```
 
-#### 4. Median of Two Sorted Arrays  2018/11/18 &ensp; &ensp; &ensp;
+# 4. Median of Two Sorted Arrays  2018/11/18 &ensp; &ensp; &ensp;
 + java 25 ms,感觉题目不难，但是用时较长，之后要多练
 ```java
 class Solution {
@@ -274,7 +340,46 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 }
 ```
 
-#### 5.Longest Palindromic Substring（最长回文子串） 2018/11/19 *****
+## 5.Longest Palindromic Substring（最长回文子串） 2018/11/19 *****
+### 解法
++ 暴力解法
++ 动态规划法
++ 扩展中心法
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+        int length = s.length();
+        int start = 0, end = 0;
+        if (length <= 1) {
+            return s;
+        }
+        for (int i = 0; i < length; i++) {
+            int len1 = 0;
+            int len2 = 0;
+            len1 = expandCenter(s, i, i + 1);
+            len2 = expandCenter(s, i, i);
+
+            len1 = Math.max(len1, len2);
+
+            if (len1 > end - start) {
+                start = i - (len1 - 1) / 2;
+                end = i + len1 / 2;
+            }
+        }
+
+        return s.substring(start, end + 1);
+    }
+
+    private int expandCenter(String s, int left, int right) {
+        int i = left, j = right;
+        while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
+            i--;
+            j++;
+        }
+        return j - i - 1;
+    }
+}
+```
 + java 超时解，暴力解法，难点在回文串的判断
 ```java
 class Solution {
@@ -352,6 +457,11 @@ func isPalindrome(s string) bool{
 
 + java语言，动态规划解法，148 ms,beat 16% ，
 难点在dp[i][j]的理解和推导
+```
+1. dp[l][r]为true表示从l到r的子串为回文串
+2. 初始化二位数组，单个字符为回文串，所以dp[i][i]=true
+3. 找到状态转移方程，dp[l][r] = (s[r]==s[l]&&(r-l==1||dp[l+1][r-1]))?true:false
+```
 ```java
 class Solution {
     public String longestPalindrome(String s) {
@@ -382,6 +492,38 @@ class Solution {
             }
         }
         return ans;
+    }
+}
+```
++ 动态规划
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+
+        int sLength = s.length();
+        int maxLength = 0;
+        String result = "";
+        if (sLength <= 1) {
+            return s;
+        } else {
+            boolean dp[][] = new boolean[sLength][sLength];
+            for (int i = sLength-1; i >= 0; i--) {
+                for (int j = sLength-1; j >= i; j--) {
+                    if(s.charAt(i)==s.charAt(j)&&((j-i<=1)||(dp[i+1][j-1]))){
+                        dp[i][j] = true;
+                    }else {
+                        dp[i][j] = false;
+                    }
+                    if(dp[i][j]&&(j-i>=maxLength)){//注意这里是>=
+                        maxLength = j-i+1;
+                        result = s.substring(i,j+1);
+                    }
+                }
+            }
+
+        }
+
+        return result;
     }
 }
 ```
@@ -428,7 +570,13 @@ func longestPalindromeDp(s string) string {
 	return result
 }
 ```
-#### 6.ZigZag Conversion（Z型字母排列转换）  2018/11/21 
+### 相似题目
++ 214.最短回文串
++ 336.回文对
++ 516.最长回文子序列
++ 647.回文子串
+
+## 6.ZigZag Conversion（Z型字母排列转换）  2018/11/21 
 + java语言，72ms,O(N<sup>2</sup>)，难点在精确的下标控制
 ```java
 class Solution {

@@ -19,5 +19,7 @@ class MainClass {
     public static void main(String[] args){
 
         System.out.println(new D().a);
+        String s = "abc";
+        System.out.println(s.substring(0,s.length()));
     }
 }
